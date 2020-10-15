@@ -1,0 +1,6 @@
+black
+loguru
+mypy
+pykiwoom
+pylint
+pyqt5
