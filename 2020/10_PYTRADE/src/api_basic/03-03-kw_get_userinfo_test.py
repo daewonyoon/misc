@@ -13,4 +13,4 @@ login_info_dic = {
     key: kiwoom.GetLoginInfo(key) for key in login_info_keys
 }
 
-print(login_info_dic)
+pprint(login_info_dic)

@@ -1,2 +1,4 @@
 env3832/
 .vscode/
+dat/*.csv
+log.txt
