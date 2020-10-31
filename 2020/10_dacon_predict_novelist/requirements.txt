@@ -6,3 +6,5 @@ mypy
 pandas
 pylint
 tensorflow
+tqdm
+transformers
