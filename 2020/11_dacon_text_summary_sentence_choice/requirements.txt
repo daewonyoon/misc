@@ -1,0 +1,9 @@
+black
+jupyter
+konlpy
+krwordrank
+mypy
+pandas
+pylint
+tqdm
+git+https://github.com/lovit/textrank
