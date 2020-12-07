@@ -1,2 +1,2 @@
-# python stock trading pracise project
+# python stock trading practise project
 

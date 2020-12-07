@@ -1,0 +1,12 @@
+bert-extractive-summarizer
+black
+jupyter
+konlpy
+krwordrank
+mypy
+pandas
+pylint
+tensorflow
+tqdm
+transformers
+git+https://github.com/lovit/textrank
