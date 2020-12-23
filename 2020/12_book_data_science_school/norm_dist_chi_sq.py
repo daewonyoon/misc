@@ -15,14 +15,15 @@ dist = scipy.stats.norm()
 
 def plot_chisq(df, ax):
     x = np.linspace(0, 20, 399)
-    ax.plot(x, scipy.stats.chi2.pdf(x, df))
+    ax.plot(x, scipy.stats.chi2.pdf(x, df), label=f"$\\chi ^2({df})$ ")
+    ax.legend()
 
-def do(n_sample):
+def do(n_sample, n_sampling=100000):
     xs = []
     ms = []
     xsqs = []
 
-    for _ in range(200000):
+    for _ in range(n_sampling):
         x = dist.rvs(n_sample)
         xs.append(x)
         ms.append(x.mean())
@@ -59,13 +60,5 @@ do(4)
 
 # %%
 do(5)
-
-
-# %%
-
-
-
-# %%
-
 
 
