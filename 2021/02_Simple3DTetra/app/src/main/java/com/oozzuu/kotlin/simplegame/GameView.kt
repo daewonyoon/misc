@@ -6,19 +6,27 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.view.MotionEventCompat
 
 class GameView(context: Context) : View(context) {
 
-    val paint: Paint
+    private var canvas_ox_: Float = 0f
+    private var canvas_oy_: Float = 0f
+    private var mActivePointerId: Int = 0
+    private var mLastTouchX: Float = 0f
+    private var mLastTouchY: Float = 0f
+    private val paint: Paint
 
-    var o: Vector3D
-    var axis1: Vector3D
-    var axis2: Vector3D
-    var axis3: Vector3D
-    var axisNo: Int = 0
+    private var o: Vector3D
+    private var axis1: Vector3D
+    private var axis2: Vector3D
+    private var axis3: Vector3D
+    private var axisNo: Int = 0
 
-    var canvas_ox: Float
-    var canvas_oy: Float
+    private var canvas_ox: Float
+    private var canvas_oy: Float
+
+    private var is_moving: Boolean = false
 
     init {
         paint = Paint()
@@ -66,13 +74,65 @@ class GameView(context: Context) : View(context) {
         canvas?.drawLine(v1.x_prj, v1.y_prj, v2.x_prj, v2.y_prj, paint)
     }
 
+    fun isNearOrg(x:Float, y:Float) :Boolean {
+        return Math.abs(x-canvas_ox) < 10f && Math.abs(y-canvas_oy) < 10f
+    }
+
+    fun move_canvas_o() {
+        o.setO(canvas_ox, canvas_oy)
+        axis1.setO(canvas_ox, canvas_oy)
+        axis2.setO(canvas_ox, canvas_oy)
+        axis3.setO(canvas_ox, canvas_oy)
+    }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_MOVE -> {
-                rotate(axisNo)
+                if(is_moving) {
+                    val (x: Float, y: Float) =
+                        MotionEventCompat.findPointerIndex(event, mActivePointerId).let { pointerIndex ->
+                            // Calculate the distance moved
+                            MotionEventCompat.getX(event, pointerIndex) to
+                                    MotionEventCompat.getY(event, pointerIndex)
+                        }
+
+                    canvas_ox = canvas_ox_ + x - mLastTouchX
+                    canvas_oy = canvas_oy_ + y - mLastTouchY
+                    move_canvas_o()
+
+                } else {
+                    rotate(axisNo)
+                }
             }
             MotionEvent.ACTION_DOWN -> {
-                axisNo = (axisNo + 1) % 3
+                var x: Float = 0f
+                var y: Float = 0f
+                MotionEventCompat.getActionIndex(event).also { pointerIndex ->
+                    // Remember where we started (for dragging)
+                    x = MotionEventCompat.getX(event, pointerIndex)
+                    y = MotionEventCompat.getY(event, pointerIndex)
+                }
+                if(isNearOrg(x, y)) {
+                    is_moving = true
+
+                    mLastTouchX = x
+                    mLastTouchY = y
+                    canvas_ox_ = canvas_ox
+                    canvas_oy_ = canvas_oy
+
+                    // Save the ID of this pointer (for dragging)
+                    mActivePointerId = MotionEventCompat.getPointerId(event, 0)
+                }
+                else {
+                    axisNo = (axisNo + 1) % 3
+                }
+            }
+
+            MotionEvent.ACTION_UP -> {
+                if (is_moving) {
+                    is_moving = false
+                }
+
             }
         }
 
