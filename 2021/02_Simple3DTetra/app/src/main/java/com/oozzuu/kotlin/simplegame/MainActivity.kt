@@ -1,10 +1,9 @@
 package com.oozzuu.kotlin.simplegame
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.btnPlay
 
 class MainActivity : AppCompatActivity() {
     //private var btnPlay: Button? = null
@@ -15,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         //btnPlay = findViewById<Button>("btnPlay")
 
-        btnPlay.setOnClickListener{
+        btnPlay.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             startActivity(intent)
 
