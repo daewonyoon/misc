@@ -3,7 +3,7 @@ package com.oozzuu.kotlin.simplegame
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.btnPlay
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     //private var btnPlay: Button? = null

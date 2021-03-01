@@ -36,7 +36,7 @@ class GameView(context: Context) : View(context) {
         paint.color = Color.BLUE
 
         canvas_ox = 500f
-        canvas_oy = 500f
+        canvas_oy = 1000f
 
         o = Vector3D(0f, 0f, 0f).setO(canvas_ox, canvas_oy)
         axis1 = Vector3D(1f, 0f, 0f).setO(canvas_ox, canvas_oy)
@@ -62,39 +62,49 @@ class GameView(context: Context) : View(context) {
         drawLine(canvas, o, axis3, Color.BLACK, if (axisNo == 2) w * 3 else w)
     }
 
-    fun drawLine(canvas: Canvas?, x1: Float, y1: Float, x2: Float, y2: Float, col: Int, width: Float = 4f) {
+    fun drawLine(
+        canvas: Canvas?,
+        x1: Float,
+        y1: Float,
+        x2: Float,
+        y2: Float,
+        col: Int,
+        width: Float = 4f
+    ) {
         paint.color = col
         paint.strokeWidth = width
         canvas?.drawLine(x1, y1, x2, y2, paint)
     }
 
-    fun drawLine(canvas: Canvas?, v1:Vector3D, v2:Vector3D, col: Int, width: Float = 4f) {
+    fun drawLine(canvas: Canvas?, v1: Vector3D, v2: Vector3D, col: Int, width: Float = 4f) {
         paint.color = col
         paint.strokeWidth = width
         canvas?.drawLine(v1.x_prj, v1.y_prj, v2.x_prj, v2.y_prj, paint)
+        //canvas?.drawLine(v1.prj_x(), v1.prj_y(), v2.prj_x(), v2.prj_y(), paint)
     }
 
-    fun isNearOrg(x:Float, y:Float) :Boolean {
-        return Math.abs(x-canvas_ox) < 10f && Math.abs(y-canvas_oy) < 10f
+    fun isNearOrg(x: Float, y: Float): Boolean {
+        return Math.abs(x - canvas_ox) < 10f && Math.abs(y - canvas_oy) < 10f
     }
 
     fun move_canvas_o() {
-        o.setO(canvas_ox, canvas_oy)
-        axis1.setO(canvas_ox, canvas_oy)
-        axis2.setO(canvas_ox, canvas_oy)
-        axis3.setO(canvas_ox, canvas_oy)
+        o = o.setO(canvas_ox, canvas_oy)
+        axis1 = axis1.setO(canvas_ox, canvas_oy)
+        axis2 = axis2.setO(canvas_ox, canvas_oy)
+        axis3 = axis3.setO(canvas_ox, canvas_oy)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_MOVE -> {
-                if(is_moving) {
+                if (is_moving) {
                     val (x: Float, y: Float) =
-                        MotionEventCompat.findPointerIndex(event, mActivePointerId).let { pointerIndex ->
-                            // Calculate the distance moved
-                            MotionEventCompat.getX(event, pointerIndex) to
-                                    MotionEventCompat.getY(event, pointerIndex)
-                        }
+                        MotionEventCompat.findPointerIndex(event, mActivePointerId)
+                            .let { pointerIndex ->
+                                // Calculate the distance moved
+                                MotionEventCompat.getX(event, pointerIndex) to
+                                        MotionEventCompat.getY(event, pointerIndex)
+                            }
 
                     canvas_ox = canvas_ox_ + x - mLastTouchX
                     canvas_oy = canvas_oy_ + y - mLastTouchY
@@ -112,7 +122,7 @@ class GameView(context: Context) : View(context) {
                     x = MotionEventCompat.getX(event, pointerIndex)
                     y = MotionEventCompat.getY(event, pointerIndex)
                 }
-                if(isNearOrg(x, y)) {
+                if (isNearOrg(x, y)) {
                     is_moving = true
 
                     mLastTouchX = x
@@ -122,8 +132,7 @@ class GameView(context: Context) : View(context) {
 
                     // Save the ID of this pointer (for dragging)
                     mActivePointerId = MotionEventCompat.getPointerId(event, 0)
-                }
-                else {
+                } else {
                     axisNo = (axisNo + 1) % 3
                 }
             }

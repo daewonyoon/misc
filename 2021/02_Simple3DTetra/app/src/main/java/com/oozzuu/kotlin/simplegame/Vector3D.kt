@@ -6,16 +6,17 @@ data class Vector3D(
     val z: Float
 ) {
 
-    constructor(_x:Float, _y:Float, _z:Float, _ox:Float, _oy:Float): this(_x, _y, _z) {
+    constructor(_x: Float, _y: Float, _z: Float, _ox: Float, _oy: Float) : this(_x, _y, _z) {
         setO(_ox, _oy)
     }
+
     operator fun times(r: Double): Vector3D {
         val rr: Float = r.toFloat()
-        return Vector3D(rr * x, rr * y, rr * z)
+        return Vector3D(rr * x, rr * y, rr * z).setO(ox, oy)
     }
 
     operator fun plus(v: Vector3D): Vector3D {
-        return Vector3D(x + v.x, y + v.y, z + v.z)
+        return Vector3D(x + v.x, y + v.y, z + v.z).setO(ox, oy)
     }
 
     fun dot(v: Vector3D): Float {
@@ -49,9 +50,9 @@ data class Vector3D(
             return oy + x * exy + y * eyy + z * ezy
         }
 
-    fun setO(ox: Float, oy: Float): Vector3D {
-        this.ox = ox
-        this.oy = oy
+    fun setO(ox_: Float, oy_: Float): Vector3D {
+        ox = ox_
+        oy = oy_
         return this
     }
 }
