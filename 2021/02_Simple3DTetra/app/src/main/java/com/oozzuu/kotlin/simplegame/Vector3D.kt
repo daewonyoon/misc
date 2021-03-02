@@ -1,22 +1,19 @@
 package com.oozzuu.kotlin.simplegame
 
+import android.graphics.PointF
+
 data class Vector3D(
     val x: Float,
     val y: Float,
     val z: Float
 ) {
-
-    constructor(_x: Float, _y: Float, _z: Float, _ox: Float, _oy: Float) : this(_x, _y, _z) {
-        setO(_ox, _oy)
-    }
-
     operator fun times(r: Double): Vector3D {
         val rr: Float = r.toFloat()
-        return Vector3D(rr * x, rr * y, rr * z).setO(ox, oy)
+        return Vector3D(rr * x, rr * y, rr * z)
     }
 
     operator fun plus(v: Vector3D): Vector3D {
-        return Vector3D(x + v.x, y + v.y, z + v.z).setO(ox, oy)
+        return Vector3D(x + v.x, y + v.y, z + v.z)
     }
 
     fun dot(v: Vector3D): Float {
@@ -30,29 +27,27 @@ data class Vector3D(
 
         return Vector3D(xx, yy, zz)
     }
+}
 
-    var ox: Float = 500f
-    var oy: Float = 500f
-    var exx: Float = 400f
-    var exy: Float = 0f
-    var eyx: Float = -80f
-    var eyy: Float = 320f
-    var ezx: Float = -100f
-    var ezy: Float = -280f
+data class ProjectionWorld(
+    val o: PointF,
+    val exx: Float,    val exy: Float,
+    val eyx: Float,    val eyy: Float,
+    val ezx: Float,    val ezy: Float
+) {
 
-    var x_prj: Float = 0.0f
-        get() {
-            return ox + x * exx + y * eyx + z * ezx
-        }
+    fun setO(o_: PointF): ProjectionWorld {
+        return ProjectionWorld(o_, exx, exy, eyx, eyy, ezx, ezy)
+    }
 
-    var y_prj: Float = 0.0f
-        get() {
-            return oy + x * exy + y * eyy + z * ezy
-        }
+    fun setScale(r: Float): ProjectionWorld {
+        return ProjectionWorld(o, r * exx, r * exy, r * eyx, r * eyy, r * ezx, r * ezy)
+    }
 
-    fun setO(ox_: Float, oy_: Float): Vector3D {
-        ox = ox_
-        oy = oy_
-        return this
+    fun getProjection(v: Vector3D): PointF {
+        return PointF(
+            o.x + v.x * exx + v.y * eyx + v.z * ezx,
+            o.y + v.x * exy + v.y * eyy + v.z * ezy
+        )
     }
 }

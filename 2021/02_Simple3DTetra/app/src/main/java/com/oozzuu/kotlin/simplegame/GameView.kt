@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PointF
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.view.MotionEventCompat
 
 class GameView(context: Context) : View(context) {
 
-    private var canvas_ox_: Float = 0f
-    private var canvas_oy_: Float = 0f
     private var mActivePointerId: Int = 0
     private var mLastTouchX: Float = 0f
     private var mLastTouchY: Float = 0f
@@ -23,8 +22,9 @@ class GameView(context: Context) : View(context) {
     private var axis3: Vector3D
     private var axisNo: Int = 0
 
-    private var canvas_ox: Float
-    private var canvas_oy: Float
+    private var canvas_o: PointF
+    private var canvas_o_cache: PointF = PointF(0f, 0f)
+    private var projectionworld: ProjectionWorld
 
     private var is_moving: Boolean = false
 
@@ -35,13 +35,18 @@ class GameView(context: Context) : View(context) {
         paint.strokeWidth = 4f
         paint.color = Color.BLUE
 
-        canvas_ox = 500f
-        canvas_oy = 1000f
+        canvas_o = PointF(500f, 1000f)
+        projectionworld = ProjectionWorld(
+            canvas_o,
+            400f, 0f,
+            -80f, 320f,
+            -100f, -280f
+        )
 
-        o = Vector3D(0f, 0f, 0f).setO(canvas_ox, canvas_oy)
-        axis1 = Vector3D(1f, 0f, 0f).setO(canvas_ox, canvas_oy)
-        axis2 = Vector3D(0f, 1f, 0f).setO(canvas_ox, canvas_oy)
-        axis3 = Vector3D(0f, 0f, 1f).setO(canvas_ox, canvas_oy)
+        o = Vector3D(0f, 0f, 0f)
+        axis1 = Vector3D(1f, 0f, 0f)
+        axis2 = Vector3D(0f, 1f, 0f)
+        axis3 = Vector3D(0f, 0f, 1f)
     }
 
     override fun draw(canvas: Canvas?) {
@@ -62,36 +67,21 @@ class GameView(context: Context) : View(context) {
         drawLine(canvas, o, axis3, Color.BLACK, if (axisNo == 2) w * 3 else w)
     }
 
-    fun drawLine(
-        canvas: Canvas?,
-        x1: Float,
-        y1: Float,
-        x2: Float,
-        y2: Float,
-        col: Int,
-        width: Float = 4f
-    ) {
-        paint.color = col
-        paint.strokeWidth = width
-        canvas?.drawLine(x1, y1, x2, y2, paint)
-    }
 
     fun drawLine(canvas: Canvas?, v1: Vector3D, v2: Vector3D, col: Int, width: Float = 4f) {
+        var p1: PointF = projectionworld.getProjection(v1)
+        var p2: PointF = projectionworld.getProjection(v2)
         paint.color = col
         paint.strokeWidth = width
-        canvas?.drawLine(v1.x_prj, v1.y_prj, v2.x_prj, v2.y_prj, paint)
-        //canvas?.drawLine(v1.prj_x(), v1.prj_y(), v2.prj_x(), v2.prj_y(), paint)
+        canvas?.drawLine(p1.x, p1.y, p2.x, p2.y, paint)
     }
 
     fun isNearOrg(x: Float, y: Float): Boolean {
-        return Math.abs(x - canvas_ox) < 10f && Math.abs(y - canvas_oy) < 10f
+        return Math.abs(x - canvas_o.x) < 10f && Math.abs(y - canvas_o.y) < 10f
     }
 
     fun move_canvas_o() {
-        o = o.setO(canvas_ox, canvas_oy)
-        axis1 = axis1.setO(canvas_ox, canvas_oy)
-        axis2 = axis2.setO(canvas_ox, canvas_oy)
-        axis3 = axis3.setO(canvas_ox, canvas_oy)
+        projectionworld = projectionworld.setO(canvas_o)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -103,13 +93,12 @@ class GameView(context: Context) : View(context) {
                             .let { pointerIndex ->
                                 // Calculate the distance moved
                                 MotionEventCompat.getX(event, pointerIndex) to
-                                        MotionEventCompat.getY(event, pointerIndex)
+                                    MotionEventCompat.getY(event, pointerIndex)
                             }
 
-                    canvas_ox = canvas_ox_ + x - mLastTouchX
-                    canvas_oy = canvas_oy_ + y - mLastTouchY
+                    canvas_o.x = canvas_o_cache.x + x - mLastTouchX
+                    canvas_o.y = canvas_o_cache.y + y - mLastTouchY
                     move_canvas_o()
-
                 } else {
                     rotate(axisNo)
                 }
@@ -127,8 +116,8 @@ class GameView(context: Context) : View(context) {
 
                     mLastTouchX = x
                     mLastTouchY = y
-                    canvas_ox_ = canvas_ox
-                    canvas_oy_ = canvas_oy
+                    canvas_o_cache.x = canvas_o.x
+                    canvas_o_cache.y = canvas_o.y
 
                     // Save the ID of this pointer (for dragging)
                     mActivePointerId = MotionEventCompat.getPointerId(event, 0)
@@ -141,7 +130,6 @@ class GameView(context: Context) : View(context) {
                 if (is_moving) {
                     is_moving = false
                 }
-
             }
         }
 
