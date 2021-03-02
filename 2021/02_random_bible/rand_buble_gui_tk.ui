@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface version="1.1">
+  <object class="tk.Toplevel" id="toplevel">
+    <property name="geometry">700x180</property>
+    <property name="padx">10</property>
+    <property name="pady">10</property>
+    <property name="title" translatable="yes">Today's Word</property>
+    <child>
+      <object class="ttk.Label" id="label">
+        <property name="borderwidth">3</property>
+        <property name="font">{맑은 고딕} 12 {}</property>
+        <property name="padding">5</property>
+        <property name="relief">sunken</property>
+        <property name="text" translatable="yes">버튼을 눌러 말씀을 뽑으세요! 버튼을 눌러 말씀을 뽑으세요! 버튼을 눌러 말씀을 뽑으세요! 버튼을 눌러 말씀을 뽑으세요! 버튼을 눌러 말씀을 뽑으세요! 버튼을 눌러 말씀을 뽑으세요! 버튼을 눌러 말씀을 뽑으세요!
+</property>
+        <property name="wraplength">690</property>
+        <layout manager="pack">
+          <property name="fill">both</property>
+          <property name="ipadx">5</property>
+          <property name="ipady">5</property>
+          <property name="propagate">True</property>
+          <property name="side">top</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="button">
+        <property name="text" translatable="yes">말씀뽑기</property>
+        <layout manager="pack">
+          <property name="anchor">sw</property>
+          <property name="propagate">False</property>
+          <property name="side">bottom</property>
+        </layout>
+      </object>
+    </child>
+  </object>
+</interface>

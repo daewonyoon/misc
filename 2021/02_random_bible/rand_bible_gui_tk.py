@@ -27,15 +27,16 @@ class MyWindow(Tk):
         self.bible = Bible()
 
         self.title("Today's Word")
-        self.geometry("900x200")
+        self.geometry("700x180")
+        self.configure(padx=10, pady=10)
         self.resizable(False, False)
 
-        # self.frame = Frame(self, width=1000, height=400)
+        self.label = ttk.Label(self, text="버튼을 눌러, 오늘의 말씀을 뽑으세요.", wraplength=650, relief="sunken")
+        self.label.configure(borderwidth=5, font="{맑은 고딕} 12 {}", padding=5)
+        self.label.pack(fill="both", ipadx=5, ipady=5, side="top")
 
-        self.label = Label(self, text="버튼을 눌러, 오늘의 말씀을 뽑으세요.", wraplength=800, justify="left", relief="sunken")
-        self.label.grid(column=0, row=0, ipadx=10, ipady=10, padx=10, pady=10)
-        self.button = Button(self, text="말씀뽑기", command=self.clicked)
-        self.button.grid(column=0, row=1, sticky="sw", ipadx=10, ipady=10, padx=10, pady=10)
+        self.button = ttk.Button(self, text="말씀뽑기", command=self.clicked)
+        self.button.pack(anchor="sw", side="bottom")
 
     def clicked(self):
         self.label.configure(text=self.bible.choose_one())
