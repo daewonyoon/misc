@@ -19,7 +19,30 @@ class Bible:
         return random.choice(self.bible_list)
 
 
-def main():
+class MyWindow(Tk):
+    def __init__(self):
+        super().__init__()
+
+        ttk.Style().theme_use("clam")
+        self.bible = Bible()
+
+        self.title("Today's Word")
+        self.geometry("900x200")
+        self.resizable(False, False)
+
+        # self.frame = Frame(self, width=1000, height=400)
+
+        self.label = Label(self, text="버튼을 눌러, 오늘의 말씀을 뽑으세요.", wraplength=800, justify="left", relief="sunken")
+        self.label.grid(column=0, row=0, ipadx=10, ipady=10, padx=10, pady=10)
+        self.button = Button(self, text="말씀뽑기", command=self.clicked)
+        self.button.grid(column=0, row=1, sticky="sw", ipadx=10, ipady=10, padx=10, pady=10)
+
+    def clicked(self):
+        self.label.configure(text=self.bible.choose_one())
+
+
+"""
+def main_():
     win = Tk()
     ttk.Style().theme_use("clam")
     bible = Bible()
@@ -32,16 +55,14 @@ def main():
         lbl.configure(text=bible.choose_one())
 
     btn = Button(win, text="말씀뽑기", command=clicked)
-    btn.grid(
-        column=0,
-        row=1,
-        sticky="sw",
-        ipadx=10,
-        ipady=10,
-        padx=10,
-        pady=10,
-    )
+    btn.grid(column=0, row=1, sticky="sw", ipadx=10, ipady=10, padx=10, pady=10)
 
+    win.mainloop()
+"""
+
+
+def main():
+    win = MyWindow()
     win.mainloop()
 
 
