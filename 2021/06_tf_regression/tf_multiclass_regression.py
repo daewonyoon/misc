@@ -29,17 +29,17 @@ hypothesis = tf.nn.softmax(logits)
 cost_i = tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=Y)
 
 cost = tf.reduce_mean(cost_i)
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001).minimize(cost)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(cost)
 
 # -----------------------------------------------------------------------#
 
-xdata_new = [[1, 11, 7], [1, 3, 4], [1, 1, 0], [1, 1, 0], [25, 10, 3]]
+xdata_new = [[1, 11, 7], [1, 3, 4], [1, 1, 0], [1, 1, 0], [25, 10, 3], [17, 15, 2]]
 
 with tf.Session() as sess:
     # sess = tf.Session()
     sess.run(tf.global_variables_initializer())
 
-    for step in range(4001):
+    for step in range(8001):
         _, cost_val = sess.run([optimizer, cost], feed_dict={X: x_data, Y: y_data})
 
         if step % 100 == 0:
