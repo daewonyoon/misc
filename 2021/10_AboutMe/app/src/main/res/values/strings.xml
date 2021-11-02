@@ -2,8 +2,17 @@
     <string name="app_name">AboutMe</string>
     <string name="name">Daewon YOON</string>
     <string name="yello_star">Yello star</string>
-    <string name="bio">Hi, my name is Aleks.
-\n\nI love fish.
+    <string name="bio">안녕. 나는 대원이야.
+\n\n나는 음악이 좋아. 내가 가장 좋아하는 음악은 브라질에서 시작된 보싸노바야.
+\n\n보싸노바라는 이름만으로는 모르는 사람도 많겠지만, 아마도 광고음악이나, 특히 카페에서 뒤에 흐르는 음악으로 분명히 들어봤을거야.
+\n\n보싸노바는 잔잔한 재즈풍의 음악이고, 브라질의 박진감넘치는 쌈바의 영향도 있어서, 꽤 리듬감이 있는 곡들도 많아.
+\n\n내가 보싸노바에서 좋아하는 부분은 템포가 그렇게 느린 곡들이 아닌데도, 멜로디에 애잔한 슬픔이 담겨있다는 점이야.
+\n\n우리가 익숙한 슬픈 노래라는 건 보통 가수가 목청 높여 슬픔을 부르짖거나, 울음에 가까운 슬픈 목소리로 부르는 노래인 경우가 많아.
+\n\n하지만 보싸노바는 슬픈 멜로디와는 한발짝 떨어져서 관조하는 듯, 힘없이 부르는 곡들이 많아. 그런 것이 내가 생각하는 보싸노바야.
+\n\n보싸노바를 잘 모르는 친구들은, 보싸노바를 한번 관심을 갖고 들어봐. 좋은 음악이야.\n\n
+    </string>
+    <string name="bio_e">Hi, my name is Daewon.
+\n\nI love music.
 \n\nThe kind that is alive and swims around in an aquarium or river, or a lake, and definitely the ocean.
 \nFun fact is that I have several aquariums and also a river.
 \n\nI like eating fish, too. Raw fish. Grilled fish. Smoked fish. Poached fish - not so much.
