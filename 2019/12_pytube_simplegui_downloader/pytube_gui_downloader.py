@@ -22,6 +22,19 @@ window = sg.Window("Youtube Downloader", layout)
 #              [Button('Ok', bind_return_key=True)]]
 #
 #    return sel_idx
+def update_progress(stream, chunk, bytes_remaining):
+    filesize = stream.filesize
+    prog_msg = f"{100*(filesize-bytes_remaining)/filesize:0.3f} % 다운로드. "
+    prog_msg2 = f"{bytes_remaining//1000} KB ({100*bytes_remaining/filesize:0.3f} %) 남았음."
+
+    print(prog_msg, prog_msg2)
+    window["-OUTPUT-"].update(prog_msg2)
+    return
+
+def saving_done(stream, file_path):
+    print(f"파일저장 완료. {file_path}")
+    window["-OUTPUT-"].update(f"파일저장 완료. {file_path}")
+    return    
 
 
 def save_youtube(url, folder):
@@ -31,6 +44,8 @@ def save_youtube(url, folder):
         folder = os.getcwd()
 
     yt = pytube.YouTube(url)
+    yt.register_on_progress_callback(update_progress)
+    yt.register_on_complete_callback(saving_done)
 
     vids = yt.streams  # .all()
 
@@ -66,7 +81,7 @@ while True:  # Event Loop
             result = "File Saved! " + msg
         else:
             result = "Failed. " + msg
-        window["-OUTPUT-"].update(result)
+        #window["-OUTPUT-"].update(result)
 
 
 window.close()
