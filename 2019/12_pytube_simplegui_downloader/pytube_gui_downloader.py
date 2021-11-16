@@ -9,11 +9,14 @@ layout = [
     [sg.Text("copy youtube url below :"), sg.Text(size=(25, 1), key="-OUTPUT-")],
     [sg.Text("youtube url", size=(10, 1)), sg.Input(key="-URL-")],
     [sg.Text("save folder", size=(10, 1)), sg.Input(key="-DIR-"), sg.FolderBrowse()],
-    #          [sg.Combo(('',), key='combo1')],
+    [sg.ProgressBar(100, orientation="h", size=(50, 20), key="-PROGRESS-")],
     [sg.Button("Save"), sg.Button("Exit")],
 ]
 
 window = sg.Window("Youtube Downloader", layout)
+progressbar = window["-PROGRESS-"]
+# print(progressbar)
+# progressbar.update(current_count=0, max=100)
 
 
 # def PopupSelect(lst, title='Select Popup'):
@@ -29,12 +32,17 @@ def update_progress(stream, chunk, bytes_remaining):
 
     print(prog_msg, prog_msg2)
     window["-OUTPUT-"].update(prog_msg2)
+    progressbar.update(current_count=(filesize - bytes_remaining) // filesize, max=100)
+    # window["-PROGRESS-"].UpdateBar((filesize-bytes_remaining)//filesize, 100)
     return
+
 
 def saving_done(stream, file_path):
     print(f"파일저장 완료. {file_path}")
     window["-OUTPUT-"].update(f"파일저장 완료. {file_path}")
-    return    
+    progressbar.update(current_count=100, max=100)
+    # window["-PROGRESS-"].UpdateBar(0, 100)
+    return
 
 
 def save_youtube(url, folder):
@@ -81,7 +89,7 @@ while True:  # Event Loop
             result = "File Saved! " + msg
         else:
             result = "Failed. " + msg
-        #window["-OUTPUT-"].update(result)
+        # window["-OUTPUT-"].update(result)
 
 
 window.close()
