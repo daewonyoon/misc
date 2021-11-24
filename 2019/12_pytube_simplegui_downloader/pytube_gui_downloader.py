@@ -21,10 +21,9 @@ layout = [
 
 
 window = sg.Window("Youtube Downloader", layout)
-progressbar = window["-PROGRESS-"]
 
 
-def update_progress(stream, chunk, bytes_remaining):
+def update_progress(stream, _chunk, bytes_remaining):
     filesize = stream.filesize
     prog_msg = f"{100*(filesize-bytes_remaining)/filesize:0.3f} % 다운로드. "
     prog_msg2 = f"{bytes_remaining//1000} KB ({100*bytes_remaining/filesize:0.3f} %) 남았음."
@@ -32,23 +31,41 @@ def update_progress(stream, chunk, bytes_remaining):
     print(prog_msg, prog_msg2)
     window["-OUTPUT-"].update(prog_msg2)
     count = 100 * (filesize - bytes_remaining) // filesize
-    # progressbar.update(current_count=count, max=100)
-    window.write_event_value(EVT_PROGRESS, count)
+    window["-PROGRESS-"].update(current_count=count, max=100)
     return
 
 
-def saving_done(stream, file_path):
+def saving_done(_stream, file_path):
 
     print(f"파일저장 완료. {file_path}")
     window["-OUTPUT-"].update(f"파일저장 완료. {file_path}")
-    progressbar.update(current_count=100, max=100)
+    window["-PROGRESS-"].update(current_count=100, max=100)
 
     if not os.path.exists(file_path):
         print(f"파일저장 실패. {file_path}")
         window["-OUTPUT-"].update(f"파일저장 실패. {file_path}")
 
-    # window["-PROGRESS-"].UpdateBar(0, 100)
     return
+
+
+def popup_choose_stream(vids):
+    vids = [str(e) for e in vids]
+    selected_id = 0
+    layout = [
+        [sg.Listbox(vids, size=(150, 15), enable_events=True, key="-LIST-")],
+        [sg.Button("OK"), sg.Button("Cancel")],
+    ]
+    win = sg.Window("Select Stream", layout)
+    while True:
+        event, values = win.read()
+        if event in (sg.WIN_CLOSED, "OK", "Cancel"):
+            break
+        if event == "-LIST-" and len(values["-LIST-"]):
+            selected = values["-LIST-"][0]
+            selected_id = vids.index(selected)
+            print("seletected : ", selected, selected_id)
+    win.close()
+    return selected_id
 
 
 def save_youtube(url, folder):
@@ -68,11 +85,10 @@ def save_youtube(url, folder):
         l.append("%3d : %s" % (i, v))
         print(l[-1])
 
-    text = sg.PopupGetText("\n".join(l), title="Select Video")
-    i = int(text)
+    i = popup_choose_stream(vids)
 
-    th_download = lambda: vids[i].download(folder)
-    threading.Thread(target=th_download, daemon=True).start()
+    thread_download = lambda: vids[i].download(folder)
+    threading.Thread(target=thread_download, daemon=True).start()
 
     return
 
@@ -87,9 +103,6 @@ while True:  # Event Loop
         folder = values["-DIR-"]
         window["-OUTPUT-"].update("saving...")
         save_youtube(url, folder)
-    elif event == EVT_PROGRESS:
-        print(f"{event}, {values[event]}")
-        window["-PROGRESS-"].update(values[event], max=100)
 
 
 window.close()
