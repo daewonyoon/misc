@@ -9,11 +9,17 @@ import pytube
 
 sg.change_look_and_feel("Material2")
 
+cache_sfs = sg.user_settings_get_entry("-savefolders-", [])
+cache_lsf = sg.user_settings_get_entry("-last savefolder-", "")
 
 layout = [
     [sg.Text("copy youtube url below :"), sg.Text(size=(60, 1), key="-OUTPUT-")],
     [sg.Text("youtube url", size=(10, 1)), sg.Input(key="-URL-", size=(70, 1))],
-    [sg.Text("save folder", size=(10, 1)), sg.Input(key="-DIR-", size=(70, 1)), sg.FolderBrowse()],
+    [
+        sg.Text("save folder", size=(10, 1)),
+        sg.Combo(sorted(cache_sfs), default_value=cache_lsf, key="-DIR-", size=(70, 1)),
+        sg.FolderBrowse(),
+    ],
     [sg.ProgressBar(100, orientation="h", size=(50, 20), key="-PROGRESS-")],
     [sg.Button("Save"), sg.Button("Exit")],
 ]
@@ -21,10 +27,10 @@ layout = [
 
 window = sg.Window("Youtube Downloader", layout, finalize=True)
 
-save_folder = sg.user_settings_get_entry("-save folder-", "")
+# save_folder = sg.user_settings_get_entry("-save folder-", "")
 
-if save_folder:
-    window["-DIR-"].update(save_folder)
+# if save_folder:
+#    window["-DIR-"].update(save_folder)
 
 
 def update_progress(stream, _chunk, bytes_remaining):
@@ -99,6 +105,16 @@ def save_youtube(url, folder):
     return
 
 
+def cache_save_folder_to_settings(folder):
+    cache_save_folders = sg.user_settings_get_entry("-savefolders-", [])
+    if folder not in cache_save_folders:
+        cache_save_folders.append(folder)
+        cache_save_folders.sort()
+    # cache_last_save_folder = sg.user_settings_get_entry("-last savefolder-", "")
+    sg.user_settings_set_entry("-savefolders-", cache_save_folders)
+    sg.user_settings_set_entry("-last savefolder-", folder)
+
+
 while True:  # Event Loop
     event, values = window.read()
     print(event, values)
@@ -107,7 +123,8 @@ while True:  # Event Loop
     if event == "Save":
         url = values["-URL-"]
         folder = values["-DIR-"]
-        sg.user_settings_set_entry("-save folder-", folder)
+        cache_save_folder_to_settings(folder)
+        # sg.user_settings_set_entry("-save folder-", folder)
         window["-OUTPUT-"].update("saving...")
         save_youtube(url, folder)
 
