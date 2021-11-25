@@ -9,28 +9,34 @@ import pytube
 
 sg.change_look_and_feel("Material2")
 
-EVT_PROGRESS = "-EVENT_PROGRESS-"
 
 layout = [
-    [sg.Text("copy youtube url below :"), sg.Text(size=(25, 1), key="-OUTPUT-")],
-    [sg.Text("youtube url", size=(10, 1)), sg.Input(key="-URL-")],
-    [sg.Text("save folder", size=(10, 1)), sg.Input(key="-DIR-"), sg.FolderBrowse()],
+    [sg.Text("copy youtube url below :"), sg.Text(size=(60, 1), key="-OUTPUT-")],
+    [sg.Text("youtube url", size=(10, 1)), sg.Input(key="-URL-", size=(70, 1))],
+    [sg.Text("save folder", size=(10, 1)), sg.Input(key="-DIR-", size=(70, 1)), sg.FolderBrowse()],
     [sg.ProgressBar(100, orientation="h", size=(50, 20), key="-PROGRESS-")],
     [sg.Button("Save"), sg.Button("Exit")],
 ]
 
 
-window = sg.Window("Youtube Downloader", layout)
+window = sg.Window("Youtube Downloader", layout, finalize=True)
+
+save_folder = sg.user_settings_get_entry("-save folder-", "")
+
+if save_folder:
+    window["-DIR-"].update(save_folder)
 
 
 def update_progress(stream, _chunk, bytes_remaining):
     filesize = stream.filesize
-    prog_msg = f"{100*(filesize-bytes_remaining)/filesize:0.3f} % 다운로드. "
-    prog_msg2 = f"{bytes_remaining//1000} KB ({100*bytes_remaining/filesize:0.3f} %) 남았음."
+    bytes_downloaded = filesize - bytes_remaining
+    downloaded_percent = 100 * bytes_downloaded / filesize
 
-    print(prog_msg, prog_msg2)
-    window["-OUTPUT-"].update(prog_msg2)
-    count = 100 * (filesize - bytes_remaining) // filesize
+    prog_msg = f"{downloaded_percent:0.2f} % = {bytes_downloaded//1024}KB/{filesize//1024}KB 다운로드. "
+
+    print(prog_msg)
+    window["-OUTPUT-"].update(prog_msg)
+    count = int(downloaded_percent)
     window["-PROGRESS-"].update(current_count=count, max=100)
     return
 
@@ -101,6 +107,7 @@ while True:  # Event Loop
     if event == "Save":
         url = values["-URL-"]
         folder = values["-DIR-"]
+        sg.user_settings_set_entry("-save folder-", folder)
         window["-OUTPUT-"].update("saving...")
         save_youtube(url, folder)
 
