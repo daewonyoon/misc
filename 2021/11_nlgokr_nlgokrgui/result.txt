@@ -1,0 +1,165 @@
+<Response [200]>
+
+
+
+ 
+
+
+
+
+
+
+<METADATA>
+	<TOTAL>221</TOTAL>
+		
+		<RECORD>
+			<NUMBER>1</NUMBER>
+			<TITLE>창조 바이러스 H2C</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 지음</AUTHOR>
+			<PUBLISHER>랜덤하우스코리아</PUBLISHER>
+			<PUBYEAR>2009</PUBYEAR>
+			<TYPE>일반도서</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>안양시립만안도서관</LIB_NAME>
+			<LIB_CODE>141027</LIB_CODE>
+			<REC_KEY>175787158</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>2</NUMBER>
+			<TITLE>창조 바이러스 H2C</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 지음</AUTHOR>
+			<PUBLISHER>랜덤하우스코리아</PUBLISHER>
+			<PUBYEAR>2010</PUBYEAR>
+			<TYPE>일반도서</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>부산광역시 금정도서관(통합도서)</LIB_NAME>
+			<LIB_CODE>121018</LIB_CODE>
+			<REC_KEY>218280403</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>3</NUMBER>
+			<TITLE>&lt;b&gt;이승한&lt;/b&gt;의 행복한 거버넌스</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 지음</AUTHOR>
+			<PUBLISHER>청산</PUBLISHER>
+			<PUBYEAR>2017</PUBYEAR>
+			<TYPE>일반도서</TYPE>
+			<CONTENTS>Y</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME></LIB_NAME>
+			<LIB_CODE></LIB_CODE>
+			<REC_KEY>465278930</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>4</NUMBER>
+			<TITLE>엄마가 딸에게 들려주는 과학이야기</TITLE>
+			<AUTHOR>오영실 지음 ; &lt;b&gt;이승한&lt;/b&gt; 그림</AUTHOR>
+			<PUBLISHER>작은평화(서울</PUBLISHER>
+			<PUBYEAR>2006</PUBYEAR>
+			<TYPE>기타</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>김천시립도서관</LIB_NAME>
+			<LIB_CODE>147027</LIB_CODE>
+			<REC_KEY>157311890</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>5</NUMBER>
+			<TITLE>고려무인이야기. 2 : 최씨왕조·上</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 지음</AUTHOR>
+			<PUBLISHER>푸른역사</PUBLISHER>
+			<PUBYEAR>2005</PUBYEAR>
+			<TYPE>일반도서</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>안산평생학습도서관</LIB_NAME>
+			<LIB_CODE>125005</LIB_CODE>
+			<REC_KEY>102363161</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>6</NUMBER>
+			<TITLE>고려무인 이야기. 1-4</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 지음</AUTHOR>
+			<PUBLISHER>푸른역사</PUBLISHER>
+			<PUBYEAR>2001</PUBYEAR>
+			<TYPE>일반도서</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>대구광역시립중앙도서관</LIB_NAME>
+			<LIB_CODE>122004</LIB_CODE>
+			<REC_KEY>25690623</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>7</NUMBER>
+			<TITLE>고려무인이야기. 2 : 최씨 왕조.上</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 지음</AUTHOR>
+			<PUBLISHER>푸른역사</PUBLISHER>
+			<PUBYEAR>2003</PUBYEAR>
+			<TYPE>일반도서</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>한밭도서관</LIB_NAME>
+			<LIB_CODE>125003</LIB_CODE>
+			<REC_KEY>25866316</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>8</NUMBER>
+			<TITLE>법원실무핸드북 : 민사소송·민사집행·가사·등기·공탁·형사</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 저</AUTHOR>
+			<PUBLISHER>법률정보센타</PUBLISHER>
+			<PUBYEAR>2008</PUBYEAR>
+			<TYPE>일반도서</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>동작도서관</LIB_NAME>
+			<LIB_CODE>111013</LIB_CODE>
+			<REC_KEY>173988476</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>9</NUMBER>
+			<TITLE>고려 무인 이야기. 1</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 저</AUTHOR>
+			<PUBLISHER>푸른역사</PUBLISHER>
+			<PUBYEAR>2007</PUBYEAR>
+			<TYPE>기타</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>고창군립도서관</LIB_NAME>
+			<LIB_CODE>145052</LIB_CODE>
+			<REC_KEY>181930357</REC_KEY>
+		</RECORD>
+		
+		<RECORD>
+			<NUMBER>10</NUMBER>
+			<TITLE>고려무인이야기 4</TITLE>
+			<AUTHOR>&lt;b&gt;이승한&lt;/b&gt; 저</AUTHOR>
+			<PUBLISHER>푸른역사</PUBLISHER>
+			<PUBYEAR>2005</PUBYEAR>
+			<TYPE>일반도서</TYPE>
+			<CONTENTS>N</CONTENTS>
+			<COVER_YN>N</COVER_YN>
+			
+			<LIB_NAME>동녘도서관</LIB_NAME>
+			<LIB_CODE>149009</LIB_CODE>
+			<REC_KEY>102901713</REC_KEY>
+		</RECORD>
+	
+</METADATA>
