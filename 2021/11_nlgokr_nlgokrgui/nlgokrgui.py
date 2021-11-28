@@ -15,6 +15,8 @@ HOW_DO_I_COMMAND = "python -m howdoi.howdoi -n 2"
 DEFAULT_ICON = "E:\\TheRealMyDocs\\Icons\\QuestionMark.ico"
 
 
+sg.theme("Material1")
+
 def HowDoI():
     """
     Make and show a window (PySimpleGUI form) that takes user input and sends to the HowDoI web oracle
@@ -26,14 +28,14 @@ def HowDoI():
     """
     # -------  Make a new FlexForm  ------- #
     # Set system-wide options that will affect all future forms.  Give our form a spiffy look and feel
-    sg.SetOptions(
-        background_color="#9FB8AD",
-        text_element_background_color="#9FB8AD",
-        element_background_color="#9FB8AD",
-        scrollbar_color=None,
-        input_elements_background_color="#F7F3EC",
-        button_color=("white", "#475841"),
-    )
+    #sg.SetOptions(
+        #background_color="#9FB8AD",
+        #text_element_background_color="#9FB8AD",
+        #element_background_color="#9FB8AD",
+        #scrollbar_color=None,
+        #input_elements_background_color="#F7F3EC",
+        #button_color=("white", "#475841"),
+    #)
     form = sg.FlexForm("nl.go.kr 도서검색 프로그램", auto_size_text=True, default_element_size=(30, 2), icon=DEFAULT_ICON)
     layout = [
         [sg.Text("검색결과", size=(40, 1))],
@@ -45,8 +47,8 @@ def HowDoI():
         ],
         [
             sg.Multiline(size=(85, 5), enter_submits=True, key="query"),
-            sg.ReadFormButton("검색", button_color=(sg.YELLOWS[0], sg.BLUES[0]), bind_return_key=True),
-            sg.SimpleButton("나가기", button_color=(sg.YELLOWS[0], sg.GREENS[0])),
+            sg.ReadFormButton("검색", bind_return_key=True),
+            sg.SimpleButton("나가기"),
         ],
     ]
     form.Layout(layout)
@@ -92,12 +94,13 @@ def search_book(keyword="황순원"):
     """
 
     query = {
-        "page": str(1),
+        "page": str(1),             # 1페이지
         "per_page": str(1000),
-        "collection_set": 1,
-        "sort_ksj": "SORT_TITLE ASC",
-        "search_field1": "total_field",
-        "value1": keyword,
+        "collection_set": 1,        # 1 단행본
+        "sort_ksj": "SORT_TITLE ASC", # 타이틀 정렬
+        "search_field1": "total_field", # "total_field", "title", "author", "publisher"
+        "value1": keyword,              # 검색어1
+        "per_page": 100,
     }
     r = requests.get(QUERY_URL, params=query)
     # print(r)
