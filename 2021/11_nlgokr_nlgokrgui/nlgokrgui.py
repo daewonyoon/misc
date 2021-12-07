@@ -1,9 +1,11 @@
+# std
+
+
+# 3rd
+import pandas as pd
 import PySimpleGUI as sg
-import subprocess
 
 import requests
-import sys
-import time
 from xml.etree import ElementTree
 
 # import nlgokr as qngine
@@ -15,7 +17,7 @@ HOW_DO_I_COMMAND = "python -m howdoi.howdoi -n 2"
 DEFAULT_ICON = "E:\\TheRealMyDocs\\Icons\\QuestionMark.ico"
 
 
-sg.theme("Material1")
+sg.theme("Material2")
 
 def HowDoI():
     """
@@ -38,7 +40,7 @@ def HowDoI():
     #)
     form = sg.FlexForm("nl.go.kr 도서검색 프로그램", auto_size_text=True, default_element_size=(30, 2), icon=DEFAULT_ICON)
     layout = [
-        [sg.Text("검색결과", size=(40, 1))],
+        [sg.Text("검색결과", size=(60, 1))],
         [sg.Output(size=(88, 20))],
         [
             sg.Spin(values=(1, 2, 3, 4), initial_value=1, size=(2, 1), key="Num Answers"),
@@ -80,7 +82,7 @@ def QueryHowDoI(Query, num_answers, full_text):
     exit_code = 3
 
 
-QUERY_URL = "http://nl.go.kr/kolisnet/openApi/open.php"
+QUERY_URL = "https://nl.go.kr/kolisnet/openApi/open.php"
 
 
 def search_book(keyword="황순원"):
