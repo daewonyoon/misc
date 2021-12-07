@@ -1,12 +1,13 @@
 # std
+import requests
+from xml.etree import ElementTree
 
 
 # 3rd
 import pandas as pd
 import PySimpleGUI as sg
 
-import requests
-from xml.etree import ElementTree
+import xmltodict
 
 # import nlgokr as qngine
 
@@ -19,6 +20,7 @@ DEFAULT_ICON = "E:\\TheRealMyDocs\\Icons\\QuestionMark.ico"
 
 sg.theme("Material2")
 
+
 def HowDoI():
     """
     Make and show a window (PySimpleGUI form) that takes user input and sends to the HowDoI web oracle
@@ -30,14 +32,14 @@ def HowDoI():
     """
     # -------  Make a new FlexForm  ------- #
     # Set system-wide options that will affect all future forms.  Give our form a spiffy look and feel
-    #sg.SetOptions(
-        #background_color="#9FB8AD",
-        #text_element_background_color="#9FB8AD",
-        #element_background_color="#9FB8AD",
-        #scrollbar_color=None,
-        #input_elements_background_color="#F7F3EC",
-        #button_color=("white", "#475841"),
-    #)
+    # sg.SetOptions(
+    # background_color="#9FB8AD",
+    # text_element_background_color="#9FB8AD",
+    # element_background_color="#9FB8AD",
+    # scrollbar_color=None,
+    # input_elements_background_color="#F7F3EC",
+    # button_color=("white", "#475841"),
+    # )
     form = sg.FlexForm("nl.go.kr 도서검색 프로그램", auto_size_text=True, default_element_size=(30, 2), icon=DEFAULT_ICON)
     layout = [
         [sg.Text("검색결과", size=(60, 1))],
@@ -96,20 +98,49 @@ def search_book(keyword="황순원"):
     """
 
     query = {
-        "page": str(1),             # 1페이지
-        "per_page": str(1000),
-        "collection_set": 1,        # 1 단행본
-        "sort_ksj": "SORT_TITLE ASC", # 타이틀 정렬
-        "search_field1": "total_field", # "total_field", "title", "author", "publisher"
-        "value1": keyword,              # 검색어1
-        "per_page": 100,
+        "page": str(1),  # 1페이지
+        "per_page": str(100),
+        "collection_set": 1,  # 1 단행본
+        "sort_ksj": "SORT_TITLE ASC",  # 타이틀 정렬
+        "search_field1": "total_field",  # "total_field", "title", "author", "publisher"
+        "value1": keyword,  # 검색어1
+        # "per_page": 100,
     }
     r = requests.get(QUERY_URL, params=query)
     # print(r)
     # print(r.text)
+    parse_xml_to_dataframe(r.text)
     tree = ElementTree.fromstring(r.content)
     # print(xml_tree_stringfy(tree))
     return xml_tree_stringfy(tree)
+
+
+def parse_xml_to_dataframe(request_text):
+    d = xmltodict.parse(request_text)
+    # print(d)
+    df = pd.DataFrame(d["METADATA"]["RECORD"])
+    # print(df.to_markdown())
+    # data_window(df)
+
+
+def data_window(df: pd.DataFrame):
+    data = df.values.tolist()
+    header = df.columns
+
+    lo = [
+        [
+            sg.Table(
+                values=data,
+                headings=header,
+                display_row_numbers=True,
+                auto_size_columns=True,
+                num_rows=min(25, len(df)),
+            )
+        ]
+    ]
+    w = sg.Window("Result", lo, grab_anywhere=False)
+    e, v = w.read()
+    w.close()
 
 
 def xml_tree_stringfy(node, indent="  "):
