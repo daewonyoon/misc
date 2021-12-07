@@ -1,0 +1,2 @@
+rootProject.name = "MyRequest"
+include ':app'
