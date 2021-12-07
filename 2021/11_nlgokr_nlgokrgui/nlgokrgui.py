@@ -109,17 +109,18 @@ def search_book(keyword="황순원"):
     r = requests.get(QUERY_URL, params=query)
     # print(r)
     # print(r.text)
-    parse_xml_to_dataframe(r.text)
+    parse_xml_to_dataframe(r.text, keyword)
     tree = ElementTree.fromstring(r.content)
     # print(xml_tree_stringfy(tree))
     return xml_tree_stringfy(tree)
 
 
-def parse_xml_to_dataframe(request_text):
+def parse_xml_to_dataframe(request_text, word):
     d = xmltodict.parse(request_text)
     # print(d)
     df = pd.DataFrame(d["METADATA"]["RECORD"])
     # print(df.to_markdown())
+    df.to_csv(f"result_{word}.csv", index=False)
     # data_window(df)
 
 
