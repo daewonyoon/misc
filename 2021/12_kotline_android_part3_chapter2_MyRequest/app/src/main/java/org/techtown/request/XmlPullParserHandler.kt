@@ -39,6 +39,10 @@ class XmlPullParserHandler {
                         bookRecord!!.pubYear = textView
                     } else if (tagname.equals("type", ignoreCase = true)) {
                         bookRecord!!.type = textView
+                    } else if (tagname.equals("cover_yn", ignoreCase = true)) {
+                        bookRecord!!.coverYn = textView
+                    } else if (tagname.equals("cover_url", ignoreCase = true)) {
+                        bookRecord!!.coverUrl = textView
                     } else if (tagname.equals("content", ignoreCase = true)) {
                         bookRecord!!.content = textView
                     } else if (tagname.equals("lib_name", ignoreCase = true)) {
