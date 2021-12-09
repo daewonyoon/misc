@@ -20,7 +20,10 @@ layout = [
         sg.Combo(sorted(cache_sfs), default_value=cache_lsf, key="-DIR-", size=(70, 1)),
         sg.FolderBrowse(),
     ],
-    [sg.ProgressBar(100, orientation="h", size=(50, 20), key="-PROGRESS-")],
+    [
+        sg.ProgressBar(100, orientation="h", size=(40, 20), key="-PROGRESS-"),
+        sg.Text(size=(30, 1), key="-PROGRESS_MSG-"),
+    ],
     [sg.Button("Save"), sg.Button("Exit")],
 ]
 
@@ -38,10 +41,10 @@ def update_progress(stream, _chunk, bytes_remaining):
     bytes_downloaded = filesize - bytes_remaining
     downloaded_percent = 100 * bytes_downloaded / filesize
 
-    prog_msg = f"{downloaded_percent:0.2f} % = {bytes_downloaded//1024}KB/{filesize//1024}KB 다운로드. "
+    prog_msg = f"{downloaded_percent:3.2f}% ({bytes_downloaded//(1024*1024)}MB/{filesize//(1024*1024)}MB)"
 
     print(prog_msg)
-    window["-OUTPUT-"].update(prog_msg)
+    window["-PROGRESS_MSG-"].update(prog_msg)
     count = int(downloaded_percent)
     window["-PROGRESS-"].update(current_count=count, max=100)
     return
@@ -50,6 +53,7 @@ def update_progress(stream, _chunk, bytes_remaining):
 def saving_done(_stream, file_path):
 
     print(f"파일저장 완료. {file_path}")
+    # window["-PROGRESS_MSG-"].update("100.00%")
     window["-OUTPUT-"].update(f"파일저장 완료. {file_path}")
     window["-PROGRESS-"].update(current_count=100, max=100)
 
@@ -126,6 +130,7 @@ while True:  # Event Loop
         cache_save_folder_to_settings(folder)
         # sg.user_settings_set_entry("-save folder-", folder)
         window["-OUTPUT-"].update("saving...")
+        window["-PROGRESS-"].update(current_count=0, max=100)
         save_youtube(url, folder)
 
 
