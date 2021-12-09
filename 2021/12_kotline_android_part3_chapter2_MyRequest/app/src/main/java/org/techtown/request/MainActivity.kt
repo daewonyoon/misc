@@ -10,6 +10,19 @@ import kotlinx.android.synthetic.main.activity_main.input1
 import kotlinx.android.synthetic.main.activity_main.output1
 import kotlinx.android.synthetic.main.activity_main.requestButton
 import kotlinx.android.synthetic.main.activity_main.searchText
+import java.io.IOException
+
+class BookRecord {
+    var title:String = ""
+    var author:String = ""
+    var publisher:String = ""
+    var pubYear:String = ""
+    var type:String = ""
+    var content:String = ""
+    var libName:String = ""
+    var libCode:String = ""
+    var recKey:String = ""
+}
 
 class MainActivity : AppCompatActivity() {
 
@@ -94,6 +107,12 @@ class MainActivity : AppCompatActivity() {
     fun processResponse(response: String) {
         //val gson = Gson()
         //val boxOffice = gson.fromJson(response, BoxOffice::class.java)
+        try {
+            var parser = XmlPullParserHandler()
+
+        } catch (e:IOException) {
+            e.printStackTrace()
+        }
         output1.append(response)
     }
 }
