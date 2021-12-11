@@ -18,6 +18,8 @@ class BookRecord {
     var publisher:String = ""
     var pubYear:String = ""
     var type:String = ""
+    var coverYn:String = ""
+    var converUrl:String = ""
     var content:String = ""
     var libName:String = ""
     var libCode:String = ""
