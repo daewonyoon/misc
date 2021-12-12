@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
+    private  var checked_all: Boolean = false
 
     private val todos = listOf(
         Todo("make bootcamp youtube video #1", false),
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         Todo("make bootcamp youtube video #11", false),
         Todo("make bootcamp youtube video #12", false),
         Todo("make bootcamp youtube video #13", false),
+        Todo("make bootcamp youtube video #14", false),
+        Todo("make bootcamp youtube video #15", false),
+        Todo("make bootcamp youtube video #16", false),
+        Todo("make bootcamp youtube video #17", false),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +49,18 @@ class MainActivity : AppCompatActivity() {
         binding.todoList.layoutManager = LinearLayoutManager(this)
         binding.todoList.adapter = TodoAdapter(todos)
         //binding.todoList.layoutManager = LinearLayoutManager(this)
+
+        binding.btnCheckToggleAll.setOnClickListener{
+
+            if(!checked_all) {
+                (binding.todoList.adapter as? TodoAdapter)?.checkAll()
+                checked_all = true
+            } else {
+                (binding.todoList.adapter as? TodoAdapter)?.uncheckAll()
+                checked_all = false
+
+            }
+        }
     }
 
     private fun setupTimber() {
