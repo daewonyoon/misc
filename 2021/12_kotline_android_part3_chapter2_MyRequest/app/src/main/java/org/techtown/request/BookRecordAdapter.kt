@@ -31,5 +31,6 @@ class BookRecordViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         itemView.tv_title.text = bookRecord.title
         itemView.tv_author.text = bookRecord.author
         itemView.tv_pubyear.text = bookRecord.pubYear
+        itemView.tv_content.text = bookRecord.content
     }
 }

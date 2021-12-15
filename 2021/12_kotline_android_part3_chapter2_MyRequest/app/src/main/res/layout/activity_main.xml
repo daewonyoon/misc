@@ -20,14 +20,15 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="https://nl.go.kr/kolisnet/openApi/open.php" />
+            android:text="https://nl.go.kr/kolisnet/openApi/open.php"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/requestButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="요청" />
+            android:text="검색"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
@@ -37,13 +38,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="검색어" />
+        android:text="검색어"
+        android:textSize="16sp" />
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/recycler_books"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="400dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -59,7 +61,7 @@
                 android:id="@+id/output1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
     </ScrollView>
