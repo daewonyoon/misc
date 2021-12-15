@@ -2,14 +2,12 @@ package org.techtown.request
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_main.input1
-import kotlinx.android.synthetic.main.activity_main.output1
-import kotlinx.android.synthetic.main.activity_main.requestButton
-import kotlinx.android.synthetic.main.activity_main.searchText
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
 class BookRecord {
@@ -19,7 +17,7 @@ class BookRecord {
     var pubYear:String = ""
     var type:String = ""
     var coverYn:String = ""
-    var converUrl:String = ""
+    var coverUrl:String = ""
     var content:String = ""
     var libName:String = ""
     var libCode:String = ""
@@ -32,14 +30,20 @@ class MainActivity : AppCompatActivity() {
         var requestQueue: RequestQueue? = null
     }
 
+    var adapter : BookRecordAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        adapter = BookRecordAdapter()
+        adapter?.listData?.clear()
+        recycler_books.adapter = adapter
+        recycler_books.layoutManager = LinearLayoutManager(this)
+
         requestQueue = Volley.newRequestQueue(applicationContext)
 
         requestButton.setOnClickListener {
-
             send()
         }
     }
@@ -111,6 +115,11 @@ class MainActivity : AppCompatActivity() {
         //val boxOffice = gson.fromJson(response, BoxOffice::class.java)
         try {
             var parser = XmlPullParserHandler()
+            val bookrecords = parser.parse(response.byteInputStream())
+
+            adapter?.listData?.clear()
+            adapter?.listData?.addAll(bookrecords)
+            adapter?.notifyDataSetChanged()
 
         } catch (e:IOException) {
             e.printStackTrace()

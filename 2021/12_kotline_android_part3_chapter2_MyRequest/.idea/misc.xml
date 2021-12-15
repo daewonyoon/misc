@@ -5,10 +5,12 @@
       <map>
         <entry key="..\:/github/daewonyoon/misc/2021/12_kotline_android_part3_chapter2_MyRequest/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/github/mike-jung/kotlin-android/part3/chapter2/MyRequest/app/src/main/res/layout/activity_main.xml" value="0.21770833333333334" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1716485507246377" />
+        <entry key="app/src/main/res/layout/item_book.xml" value="0.171875" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

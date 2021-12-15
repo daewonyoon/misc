@@ -39,6 +39,12 @@
         android:inputType="text"
         android:text="검색어" />
 
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/recycler_books"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -53,7 +59,7 @@
                 android:id="@+id/output1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>
