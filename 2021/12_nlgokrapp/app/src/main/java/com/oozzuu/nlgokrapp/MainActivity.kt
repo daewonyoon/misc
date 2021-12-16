@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private var queue: RequestQueue? = null
     private lateinit var binding: ActivityMainBinding
-    var adapter : BookAdapter? = null
+    private lateinit var adapter : BookAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
         queue = Volley.newRequestQueue(this)
         binding.rvResults.layoutManager = LinearLayoutManager(this)
+        adapter = BookAdapter()
+        binding.rvResults.adapter = adapter
 
         binding.btnSearch.setOnClickListener {
             sendRequest()
@@ -86,7 +88,9 @@ class MainActivity : AppCompatActivity() {
             //adapter?.listData?.clear()
             //adapter?.listData?.addAll(bookrecords)
             //adapter?.notifyDataSetChanged()
-            binding.rvResults.adapter = BookAdapter(bookrecords)
+            adapter.listBook.clear()
+            adapter.listBook.addAll(bookrecords)
+            adapter.notifyDataSetChanged()
 
         } catch (e: IOException) {
             e.printStackTrace()

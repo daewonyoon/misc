@@ -8,18 +8,21 @@ import com.oozzuu.nlgokrapp.databinding.ItemBookBinding
 
 
 // ref : https://cliearl.github.io/posts/android/viewbinding-recyclerview/
-class BookAdapter(private val books: ArrayList<Book>): RecyclerView.Adapter<BookViewHolder>() {
+class BookAdapter: RecyclerView.Adapter<BookViewHolder>() {
+
+    var listBook = mutableListOf<Book>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val binding = ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BookViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
-        holder.bind(books[position])
+        holder.bind(listBook[position])
     }
 
     override fun getItemCount(): Int {
-        return books.size
+        return listBook.size
     }
 
 }
