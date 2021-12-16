@@ -2,12 +2,15 @@ package com.oozzuu.kotlin.todaysword
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.oozzuu.kotlin.todaysword.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val bible: List<String> =
             applicationContext.assets
@@ -16,8 +19,8 @@ class MainActivity : AppCompatActivity() {
                 .use { it.readText() }
                 .lines()
 
-        button.setOnClickListener {
-            textView.setText(bible.random())
+        binding.button.setOnClickListener {
+            binding.textView.setText(bible.random())
         }
     }
 }
