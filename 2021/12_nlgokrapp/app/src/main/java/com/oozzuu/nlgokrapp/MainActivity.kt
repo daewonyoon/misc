@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private var queue: RequestQueue? = null
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter : BookAdapter
+    private lateinit var adapter: BookAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         binding.btnSearch.setOnClickListener {
             sendRequest()
         }
-
     }
 
     fun buildParamString(): String {
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         url += "?"
         url += paramString
 
-        val request =  StringRequest(
+        val request = StringRequest(
             Request.Method.GET, url,
             Response.Listener<String> { response ->
                 binding.textviewResult.text = "Response is ${response}"
@@ -75,12 +74,9 @@ class MainActivity : AppCompatActivity() {
             Response.ErrorListener { response -> binding.textviewResult.text = "error : ${response}" }
         )
         queue?.add(request)
-
     }
 
     fun processResponse(response: String) {
-        //val gson = Gson()
-        //val boxOffice = gson.fromJson(response, BoxOffice::class.java)
         try {
             var parser = XmlPullParserHandler()
             val bookrecords = parser.parse(response.byteInputStream())
@@ -91,11 +87,9 @@ class MainActivity : AppCompatActivity() {
             adapter.listBook.clear()
             adapter.listBook.addAll(bookrecords)
             adapter.notifyDataSetChanged()
-
         } catch (e: IOException) {
             e.printStackTrace()
         }
         //output1.append(response)
     }
-
 }
