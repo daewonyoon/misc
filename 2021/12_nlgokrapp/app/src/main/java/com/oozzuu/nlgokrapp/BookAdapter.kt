@@ -1,5 +1,6 @@
 package com.oozzuu.nlgokrapp
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -26,12 +27,12 @@ class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
 
 class BookViewHolder(private val binding: ItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(book: Book) {
-        binding.tvTitle.text = book.title
-        binding.tvAuthor.text = book.author
-        binding.tvContent.text = book.content
-        binding.tvPublisher.text = book.publisher
-        binding.tvPubyear.text = book.pubYear
-        binding.tvLibname.text = book.libName
-        binding.tvLibcode.text = book.libCode
+        binding.tvTitle.text = Html.fromHtml(book.title)
+        binding.tvAuthor.text = Html.fromHtml(book.author)
+        binding.tvContent.text = Html.fromHtml(book.content)
+        binding.tvPublisher.text = Html.fromHtml(book.publisher)
+        binding.tvPubyear.text = Html.fromHtml(book.pubYear)
+        binding.tvLibname.text = Html.fromHtml(book.libName)
+        binding.tvLibcode.text = Html.fromHtml(book.libCode)
     }
 }

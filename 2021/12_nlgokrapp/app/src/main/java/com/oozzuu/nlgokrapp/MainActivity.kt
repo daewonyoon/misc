@@ -35,13 +35,17 @@ class MainActivity : AppCompatActivity() {
     fun buildParamString(): String {
         val params = HashMap<String, String>()
         val searchText = binding.editSearch.text.toString()
+        val startYear = binding.editStartYear.text.toString()
+        val endYear = binding.editEndYear.text.toString()
 
         params["page"] = "1"
-        params["per_page"] = "100"
+        params["per_page"] = "1000"
         params["collection_set"] = "1"
         params["sort_ksj"] = "SORT_TITLE ASC"
         params["search_field1"] = "total_field"
         params["value1"] = searchText.toString()
+        params["start_year"] = startYear
+        params["end_year"] = endYear
 
         val paramStrings: List<String> = params.toList()
             .map {
@@ -71,7 +75,9 @@ class MainActivity : AppCompatActivity() {
                 binding.textviewResult.text = "Response is ${response}"
                 processResponse(response)
             },
-            Response.ErrorListener { response -> binding.textviewResult.text = "error : ${response}" }
+            Response.ErrorListener { response ->
+                binding.textviewResult.text = "error : ${response}"
+            }
         )
         queue?.add(request)
     }
