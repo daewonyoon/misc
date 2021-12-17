@@ -34,5 +34,7 @@ class BookViewHolder(private val binding: ItemBookBinding):RecyclerView.ViewHold
         binding.tvContent.text = book.content
         binding.tvPublisher.text = book.publisher
         binding.tvPubyear.text = book.pubYear
+        binding.tvLibname.text = book.libName
+        binding.tvLibcode.text = book.libCode
     }
 }
