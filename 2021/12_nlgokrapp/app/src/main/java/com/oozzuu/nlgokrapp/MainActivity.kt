@@ -32,8 +32,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun buildParamString(): String {
+    private fun buildParamString(): String {
         val params = HashMap<String, String>()
+
         val searchText = binding.editSearch.text.toString()
         val startYear = binding.editStartYear.text.toString()
         val endYear = binding.editEndYear.text.toString()
@@ -48,17 +49,13 @@ class MainActivity : AppCompatActivity() {
         params["end_year"] = endYear
 
         val paramStrings: List<String> = params.toList()
-            .map {
-                Pair(
-                    java.net.URLEncoder.encode(it.first, "utf-8"),
-                    java.net.URLEncoder.encode(it.second, "utf-8")
-                )
-            }
-            .map { "${it.first}=${it.second}" }
-        val paramString: String = paramStrings.joinToString(separator = "&")
+            .map { "${url8encode(it.first)}=${url8encode(it.second)}" }
 
-        //return java.net.URLEncoder.encode(paramString, "utf-8")
-        return paramString
+        return paramStrings.joinToString(separator = "&")
+    }
+
+    private fun url8encode(text: String): String? {
+        return java.net.URLEncoder.encode(text, "utf-8")
     }
 
     private fun sendRequest() {
@@ -85,14 +82,9 @@ class MainActivity : AppCompatActivity() {
     fun processResponse(response: String) {
         try {
             var parser = XmlPullParserHandler()
-            val bookrecords = parser.parse(response.byteInputStream())
+            val bookRecords = parser.parse(response.byteInputStream())
 
-            //adapter?.listData?.clear()
-            //adapter?.listData?.addAll(bookrecords)
-            //adapter?.notifyDataSetChanged()
-            adapter.listBook.clear()
-            adapter.listBook.addAll(bookrecords)
-            adapter.notifyDataSetChanged()
+            adapter.setData(bookRecords)
         } catch (e: IOException) {
             e.printStackTrace()
         }
