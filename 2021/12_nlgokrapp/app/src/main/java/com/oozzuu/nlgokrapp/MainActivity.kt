@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.oozzuu.nlgokrapp.databinding.ActivityMainBinding
+import timber.log.Timber
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         params["page"] = "1"
         params["per_page"] = "1000"
-        params["collection_set"] = "1"
+        params["collection_set"] = "1" // 단행본
         params["sort_ksj"] = "SORT_TITLE ASC"
         params["search_field1"] = "total_field"
         params["value1"] = searchText.toString()
@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun sendRequest() {
         var url = binding.editUrl.text.toString()
-        val searchText = binding.editSearch.text.toString()
         val paramString = buildParamString()
 
         url += "?"
@@ -68,12 +67,14 @@ class MainActivity : AppCompatActivity() {
 
         val request = StringRequest(
             Request.Method.GET, url,
-            Response.Listener<String> { response ->
+            { response ->
                 binding.textviewResult.text = "Response is ${response}"
+                Timber.d("response : ${response}")
                 processResponse(response)
             },
-            Response.ErrorListener { response ->
+            { response ->
                 binding.textviewResult.text = "error : ${response}"
+                Timber.d("response error ${response}")
             }
         )
         queue?.add(request)
