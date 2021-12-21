@@ -72,9 +72,9 @@
         android:id="@+id/edit_end_year"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
         android:inputType="number"
         android:textAlignment="center"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/edit_start_year" />
 
