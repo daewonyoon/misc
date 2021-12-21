@@ -54,6 +54,7 @@ def HowDoI():
             sg.ReadFormButton("검색", bind_return_key=True),
             sg.SimpleButton("나가기"),
         ],
+        [sg.Multiline(size=(85, 2), key="rec_key"), sg.SimpleButton("검색2")],
     ]
     form.Layout(layout)
     # ---===--- Loop taking in user input and using it to query HowDoI --- #
@@ -64,6 +65,8 @@ def HowDoI():
             QueryHowDoI(
                 value["query"], value["Num Answers"], value["full text"]
             )  # send string without carriage return on end
+        elif button == "검색2":
+            Query2(value["rec_key"])
         else:
             break  # exit button clicked
 
@@ -84,6 +87,12 @@ def QueryHowDoI(Query, num_answers, full_text):
     exit_code = 3
 
 
+def Query2(rec_key):
+    output = search_record(rec_key)
+    print(output)
+    exit_code = 3
+
+
 QUERY_URL = "https://nl.go.kr/kolisnet/openApi/open.php"
 
 
@@ -99,7 +108,7 @@ def search_book(keyword="황순원"):
 
     query = {
         "page": str(1),  # 1페이지
-        "per_page": str(100),
+        "per_page": str(1000),
         "collection_set": 1,  # 1 단행본
         "sort_ksj": "SORT_TITLE ASC",  # 타이틀 정렬
         "search_field1": "total_field",  # "total_field", "title", "author", "publisher"
@@ -113,6 +122,17 @@ def search_book(keyword="황순원"):
     tree = ElementTree.fromstring(r.content)
     # print(xml_tree_stringfy(tree))
     return xml_tree_stringfy(tree)
+
+
+def search_record(rec_key):
+    query = {"rec_key": rec_key}
+
+    r = requests.get(QUERY_URL, params=query)
+
+    # parse_xml_to_dataframe(r.text, rec_key)
+
+    print(r.content)
+    return r.text
 
 
 def parse_xml_to_dataframe(request_text, word):
