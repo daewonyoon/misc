@@ -1,6 +1,7 @@
 package com.oozzuu.nlgokrapp
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private var queue: RequestQueue? = null
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: BookAdapter
+    private val viewModel: MyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,12 @@ class MainActivity : AppCompatActivity() {
         binding.btnSearch.setOnClickListener {
             sendRequest()
         }
+
+        viewModel.booksLiveData.observe(
+            this,
+            {
+                (binding.rvResults.adapter as BookAdapter).setData(it)
+            })
     }
 
     private fun buildParamString(): String {
@@ -44,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         params["collection_set"] = "1" // 단행본
         params["sort_ksj"] = "SORT_TITLE ASC"
         params["search_field1"] = "total_field"
-        params["value1"] = searchText.toString()
+        params["value1"] = searchText
         params["start_year"] = startYear
         params["end_year"] = endYear
 
@@ -80,12 +88,17 @@ class MainActivity : AppCompatActivity() {
         queue?.add(request)
     }
 
-    fun processResponse(response: String) {
+    private fun processResponse(response: String) {
         try {
-            var parser = XmlPullParserHandler()
+            val parser = XmlPullParserHandler()
             val bookRecords = parser.parse(response.byteInputStream())
 
-            adapter.setData(bookRecords)
+            viewModel.clear()
+            for (book in bookRecords) {
+                viewModel.addBook(book)
+            }
+
+            // adapter.setData(bookRecords)
         } catch (e: IOException) {
             e.printStackTrace()
         }

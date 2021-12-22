@@ -25,7 +25,7 @@ class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
         return listBook.size
     }
 
-    fun setData(data: ArrayList<Book>) {
+    fun setData(data: List<Book>) {
         //listBook = data
         listBook.clear()
         listBook.addAll(data)
