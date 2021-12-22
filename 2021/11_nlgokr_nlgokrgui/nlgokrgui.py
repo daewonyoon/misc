@@ -1,5 +1,7 @@
 # std
+import json
 import requests
+import time
 from xml.etree import ElementTree
 
 
@@ -124,24 +126,39 @@ def search_book(keyword="황순원"):
     return xml_tree_stringfy(tree)
 
 
-def search_record(rec_key):
+def search_record(rec_key, word=""):
     query = {"rec_key": rec_key}
 
     r = requests.get(QUERY_URL, params=query)
 
-    # parse_xml_to_dataframe(r.text, rec_key)
+    d = xmltodict.parse(r.text)
 
-    print(r.content)
+    if d["METADATA"].get("SUCCESS", False):
+        return r.text
+
+    # parse_xml_to_dataframe(r.text, rec_key)
+    with open(f"result_{word}_{rec_key}.txt", "w", encoding="utf-8") as f:
+        f.write(r.text)
+    with open(f"result_{word}_{rec_key}.json", "w", encoding="utf-8") as f:
+        json.dump(d, f, indent=2, ensure_ascii=False)
+    # print(r.content)
     return r.text
 
 
 def parse_xml_to_dataframe(request_text, word):
     d = xmltodict.parse(request_text)
     # print(d)
+    if d["METADATA"].get("SUCCESS", False):
+        print(d)
+        return
     df = pd.DataFrame(d["METADATA"]["RECORD"])
     # print(df.to_markdown())
     df.to_csv(f"result_{word}.csv", index=False)
     # data_window(df)
+    for idx, row in df.iterrows():
+        rec_key = row["REC_KEY"]
+        search_record(rec_key, word)
+        time.sleep(0.01)
 
 
 def data_window(df: pd.DataFrame):
