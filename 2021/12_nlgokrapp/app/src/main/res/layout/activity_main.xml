@@ -17,15 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="search"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <TextView
         android:id="@+id/textview_result"
         android:layout_width="0dp"
@@ -38,24 +29,22 @@
 
     <EditText
         android:id="@+id/edit_search"
-        android:layout_width="0dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/edit_start_year"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_url"
-        tools:text="황순원" />
+        android:hint="전체검색" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_results"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_search"
-        app:layout_constraintTop_toBottomOf="@+id/textview_result"
-        app:layout_constraintVertical_bias="0.483"
-        tools:layout_editor_absoluteX="4dp"
-        tools:listitem="@layout/item_book" />
+    <EditText
+        android:id="@+id/edit_search2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="저자검색"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/edit_start_year"
+        app:layout_constraintStart_toEndOf="@+id/edit_search"
+        app:layout_constraintTop_toTopOf="@+id/edit_search" />
 
     <EditText
         android:id="@+id/edit_start_year"
@@ -68,6 +57,15 @@
         app:layout_constraintEnd_toStartOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/edit_search" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="~"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_search"
+        app:layout_constraintEnd_toStartOf="@+id/edit_end_year"
+        app:layout_constraintTop_toTopOf="@+id/edit_search" />
+
     <EditText
         android:id="@+id/edit_end_year"
         android:layout_width="70dp"
@@ -78,13 +76,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/edit_start_year" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_results"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_search"
+        app:layout_constraintTop_toBottomOf="@+id/textview_result"
+        app:layout_constraintVertical_bias="0.483"
+        tools:layout_editor_absoluteX="4dp"
+        tools:listitem="@layout/item_book">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btn_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="~"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_search"
-        app:layout_constraintEnd_toStartOf="@+id/edit_end_year"
-        app:layout_constraintTop_toTopOf="@+id/edit_search" />
+        android:text="search"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

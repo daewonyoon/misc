@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         val params = HashMap<String, String>()
 
         val searchText = binding.editSearch.text.toString()
+        val searchAuthorText = binding.editSearch2.text.toString()
         val startYear = binding.editStartYear.text.toString()
         val endYear = binding.editEndYear.text.toString()
 
@@ -53,6 +54,10 @@ class MainActivity : AppCompatActivity() {
         params["sort_ksj"] = "SORT_TITLE ASC"
         params["search_field1"] = "total_field"
         params["value1"] = searchText
+        if (searchAuthorText.isNotEmpty()) {
+            params["search_field2"] = "author"
+            params["value2"] = searchAuthorText
+        }
         params["start_year"] = startYear
         params["end_year"] = endYear
 
