@@ -55,11 +55,16 @@ class MainActivity : AppCompatActivity() {
         params["search_field1"] = "total_field"
         params["value1"] = searchText
         if (searchAuthorText.isNotEmpty()) {
+            params["and_or_not1"] = "AND"
             params["search_field2"] = "author"
             params["value2"] = searchAuthorText
         }
-        params["start_year"] = startYear
-        params["end_year"] = endYear
+        if (startYear.isNotEmpty()) {
+            params["start_year"] = startYear
+        }
+        if (endYear.isNotEmpty()) {
+            params["end_year"] = endYear
+        }
 
         val paramStrings: List<String> = params.toList()
             .map { "${url8encode(it.first)}=${url8encode(it.second)}" }
@@ -103,7 +108,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.addBook(book)
             }
 
-            // adapter.setData(bookRecords)
         } catch (e: IOException) {
             e.printStackTrace()
         }
