@@ -18,6 +18,12 @@ class MyViewModel : ViewModel() {
         booksLiveData.value = data
     }
 
+    fun setBooks(books: List<Book>) {
+        data.clear()
+        data.addAll(books)
+        booksLiveData.value = data
+    }
+
     fun clear() {
         data.clear()
         booksLiveData.value = data

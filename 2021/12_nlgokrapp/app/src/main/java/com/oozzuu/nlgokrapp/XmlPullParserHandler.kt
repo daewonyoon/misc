@@ -26,31 +26,23 @@ class XmlPullParserHandler {
                         bookRecord = Book("mm")
                     }
                     XmlPullParser.TEXT -> textView = parser.text
-                    XmlPullParser.END_TAG -> if (tagname.equals("record", ignoreCase = true)) {
-                        // add employee object to list
-                        bookRecord?.let { bookRecords.add(it) }
-                    } else if (tagname.equals("title", ignoreCase = true)) {
-                        bookRecord!!.title = textView
-                    } else if (tagname.equals("author", ignoreCase = true)) {
-                        bookRecord!!.author = textView
-                    } else if (tagname.equals("publisher", ignoreCase = true)) {
-                        bookRecord!!.publisher = textView
-                    } else if (tagname.equals("pubyear", ignoreCase = true)) {
-                        bookRecord!!.pubYear = textView
-                    } else if (tagname.equals("type", ignoreCase = true)) {
-                        bookRecord!!.type = textView
-                    } else if (tagname.equals("cover_yn", ignoreCase = true)) {
-                        bookRecord!!.coverYn = textView
-                    } else if (tagname.equals("cover_url", ignoreCase = true)) {
-                        bookRecord!!.coverUrl = textView
-                    } else if (tagname.equals("content", ignoreCase = true)) {
-                        bookRecord!!.content = textView
-                    } else if (tagname.equals("lib_name", ignoreCase = true)) {
-                        bookRecord!!.libName = textView
-                    } else if (tagname.equals("lib_code", ignoreCase = true)) {
-                        bookRecord!!.libCode = textView
-                    } else if (tagname.equals("rec_key", ignoreCase = true)) {
-                        bookRecord!!.recKey = textView
+                    XmlPullParser.END_TAG -> {
+
+                        when(tagname.lowercase()) {
+                            "record" -> bookRecord?.let{bookRecords.add(it)}
+                            "title" -> bookRecord!!.title = textView
+                            "author" -> bookRecord!!.author = textView
+                            "publisher" -> bookRecord!!.publisher = textView
+                            "pubyear" -> bookRecord!!.pubYear = textView
+                            "type" -> bookRecord!!.type = textView
+                            "cover_yn" -> bookRecord!!.coverYn = textView
+                            "cover_url" -> bookRecord!!.coverUrl = textView
+                            "content" -> bookRecord!!.content = textView.trim()
+                            "lib_name" -> bookRecord!!.libName = textView
+                            "lib_code" -> bookRecord!!.libCode = textView
+                            "rec_key" -> bookRecord!!.recKey = textView
+                        }
+
                     }
 
                     else -> {

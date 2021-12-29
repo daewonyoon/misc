@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: BookAdapter
     private val viewModel: MyViewModel by viewModels()
+    private var searchMax = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +50,10 @@ class MainActivity : AppCompatActivity() {
         val endYear = binding.editEndYear.text.toString()
 
         params["page"] = "1"
-        params["per_page"] = "1000"
+        params["per_page"] = searchMax.toString() // "1000"
         params["collection_set"] = "1" // 단행본
         params["sort_ksj"] = "SORT_TITLE ASC"
+
         params["search_field1"] = "total_field"
         params["value1"] = searchText
         if (searchAuthorText.isNotEmpty()) {
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             params["search_field2"] = "author"
             params["value2"] = searchAuthorText
         }
+
         if (startYear.isNotEmpty()) {
             params["start_year"] = startYear
         }
@@ -83,6 +86,8 @@ class MainActivity : AppCompatActivity() {
         url += "?"
         url += paramString
 
+        binding.tvStatus.text = "검색요청됨."
+
         val request = StringRequest(
             Request.Method.GET, url,
             { response ->
@@ -93,6 +98,7 @@ class MainActivity : AppCompatActivity() {
             { response ->
                 binding.textviewResult.text = "error : ${response}"
                 Timber.d("response error ${response}")
+                binding.tvStatus.text = "검색에러. ${response}"
             }
         )
         queue?.add(request)
@@ -103,10 +109,11 @@ class MainActivity : AppCompatActivity() {
             val parser = XmlPullParserHandler()
             val bookRecords = parser.parse(response.byteInputStream())
 
-            viewModel.clear()
-            for (book in bookRecords) {
-                viewModel.addBook(book)
+            binding.tvStatus.text = "${bookRecords.size}건."
+            if(bookRecords.size == searchMax) {
+                binding.tvStatus.text = "${bookRecords.size}건. 검색건수가 많습니다. 조건을 추가하여 다시 검색하세요."
             }
+            viewModel.setBooks(bookRecords)
 
         } catch (e: IOException) {
             e.printStackTrace()
