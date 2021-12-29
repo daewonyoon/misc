@@ -2,12 +2,21 @@ package com.oozzuu.kotlin.todaysword
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import com.oozzuu.kotlin.todaysword.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "bible.db"
+        )
+            // TODO: createFromAsset("database/bible_ko.db")
+            .build()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -20,7 +29,7 @@ class MainActivity : AppCompatActivity() {
                 .lines()
 
         binding.button.setOnClickListener {
-            binding.textView.setText(bible.random())
+            binding.textView.text = bible.random()
         }
     }
 }
