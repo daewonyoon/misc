@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         tools:text="창세기 3장 3절"
-        android:textColor="@color/purple_500"
-        android:textSize="24sp"
+        android:textColor="@color/design_default_color_primary_variant"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/text_view"
         app:layout_constraintStart_toStartOf="parent" />
