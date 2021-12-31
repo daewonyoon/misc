@@ -5,35 +5,33 @@
 import time
 
 
-def GetNFactors0(n, primes, _):
+def GetNFactors0(n, primes, _, factors):
     """
     stupid
     """
-    m = n
-    i = 0
-    l = len(primes)
-    factors = []
-    while i < l - 1:
-        p = primes[i]
-        if m % p == 0:
-            if p not in factors:
-                factors.append(p)
-            m //= p
-            i -= 1
-        i += 1
+    sqrtn = int(n ** 0.5) + 1
 
-    if len(factors) == 0:
-        primes.append(m)
-        return 1
-    return len(factors)
+    for p in primes:
+        # p = primes[i]
+        if p > sqrtn:
+            break
+        if n % p == 0:
+            f = factors[n // p][:]
+            f.append(p)
+            factors.append(f)
+            return len(set(f))
+    # if len(factors[n]) == 1:
+    primes.append(n)
+    factors.append([n])
+    return 1
 
 
-def GetNFactors(n, primes, n_pfactors):
+def GetNFactors(n, primes, n_pfactors, _):
     """
     using acculumated n_pfactors array
     additionally doing prime-check
     """
-    sqrtn = int(n**.5) + 1
+    sqrtn = int(n ** 0.5) + 1
 
     for p in primes:
         if p > sqrtn:
@@ -62,20 +60,17 @@ def solve12(getfactor_func):
     primes = [2, 3]
     # number of prime factors
     #         for     1  2  3
-    n_pfactors = [0, 0, 1, 2]
+    n_pfactors = [0, 0, 1, 1]
+    factors = [[], [], [2], [3]]
 
     n = 4
     while 1:
-        n_pfactors.append(getfactor_func(n, primes, n_pfactors))
+        n_pfactors.append(getfactor_func(n, primes, n_pfactors, factors))
         #'''
-        if n_pfactors[n] == 4 and n_pfactors[n - 1] == 4 and n_pfactors[n - 2] == 4 and n_pfactors[n - 3] == 4:
+        if n_pfactors[n] == n_pfactors[n - 1] == n_pfactors[n - 2] == n_pfactors[n - 3] == 4:
             print(n - 3, n - 2, n - 1, n)
+            [print(e) for e in factors[-4:]]
             break
-        """     
-        if n_pfactors[n] == 3 and n_pfactors[n-1] == 3 and n_pfactors[n-2] == 3:         
-            print (n-2, n-1, n)
-            break     
-        """
         n += 1
 
 
@@ -83,7 +78,7 @@ def main():
     t = time.time()
     solve1()
     print(f"took {time.time()-t} sec")
-    
+
     t = time.time()
     solve2()
     print(f"took {time.time()-t} sec")
