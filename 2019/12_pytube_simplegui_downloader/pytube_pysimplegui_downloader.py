@@ -7,7 +7,7 @@ import PySimpleGUI as sg
 import pytube
 
 
-sg.change_look_and_feel("Material2")
+sg.change_look_and_feel("Python")
 
 cache_sfs = sg.user_settings_get_entry("-savefolders-", [])
 cache_lsf = sg.user_settings_get_entry("-last savefolder-", "")
@@ -37,6 +37,7 @@ window = sg.Window("Youtube Downloader", layout, finalize=True)
 
 
 def update_progress(stream, _chunk, bytes_remaining):
+    """progress bar update callback"""
     filesize = stream.filesize
     bytes_downloaded = filesize - bytes_remaining
     downloaded_percent = 100 * bytes_downloaded / filesize
@@ -51,11 +52,13 @@ def update_progress(stream, _chunk, bytes_remaining):
 
 
 def saving_done(_stream, file_path):
+    """progress bar on complete callback"""
 
     print(f"파일저장 완료. {file_path}")
     # window["-PROGRESS_MSG-"].update("100.00%")
     window["-OUTPUT-"].update(f"파일저장 완료. {file_path}")
     window["-PROGRESS-"].update(current_count=100, max=100)
+    window["Save"].update(disabled=False)
 
     if not os.path.exists(file_path):
         print(f"파일저장 실패. {file_path}")
@@ -65,6 +68,7 @@ def saving_done(_stream, file_path):
 
 
 def popup_choose_stream(vids):
+    """popup window for choosing stream to save"""
     vids = [str(e) for e in vids]
     selected_id = 0
     layout = [
@@ -85,6 +89,7 @@ def popup_choose_stream(vids):
 
 
 def save_youtube(url, folder):
+    """start saving youtube stream"""
     print("url:", url)
     print("folder:", folder)
     if len(folder) == 0:
@@ -103,6 +108,8 @@ def save_youtube(url, folder):
 
     i = popup_choose_stream(vids)
 
+    window["-PROGRESS_MSG-"].update("download started.")
+    window["Save"].update(disabled=True)
     thread_download = lambda: vids[i].download(folder)
     threading.Thread(target=thread_download, daemon=True).start()
 
@@ -110,6 +117,7 @@ def save_youtube(url, folder):
 
 
 def cache_save_folder_to_settings(folder):
+    """program memorizes save folder, even after program ends."""
     cache_save_folders = sg.user_settings_get_entry("-savefolders-", [])
     if folder not in cache_save_folders:
         cache_save_folders.append(folder)
