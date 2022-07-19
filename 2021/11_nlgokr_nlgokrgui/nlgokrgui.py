@@ -1,5 +1,6 @@
 # std
 import json
+import os
 import requests
 import time
 from xml.etree import ElementTree
@@ -32,16 +33,7 @@ def HowDoI():
             values, but doesn't close the form
     :return: never returns
     """
-    # -------  Make a new FlexForm  ------- #
-    # Set system-wide options that will affect all future forms.  Give our form a spiffy look and feel
-    # sg.SetOptions(
-    # background_color="#9FB8AD",
-    # text_element_background_color="#9FB8AD",
-    # element_background_color="#9FB8AD",
-    # scrollbar_color=None,
-    # input_elements_background_color="#F7F3EC",
-    # button_color=("white", "#475841"),
-    # )
+
     form = sg.FlexForm("nl.go.kr 도서검색 프로그램", auto_size_text=True, default_element_size=(30, 2), icon=DEFAULT_ICON)
     layout = [
         [sg.Text("검색결과", size=(60, 1))],
@@ -110,7 +102,7 @@ def search_book(keyword="황순원"):
 
     query = {
         "page": str(1),  # 1페이지
-        "per_page": str(1000),
+        "per_page": str(20),
         "collection_set": 1,  # 1 단행본
         "sort_ksj": "SORT_TITLE ASC",  # 타이틀 정렬
         "search_field1": "total_field",  # "total_field", "title", "author", "publisher"
@@ -137,11 +129,16 @@ def search_record(rec_key, word=""):
         return r.text
 
     # parse_xml_to_dataframe(r.text, rec_key)
-    with open(f"result_{word}_{rec_key}.txt", "w", encoding="utf-8") as f:
+
+    if not os.path.exists(f"./out/{word}/"):
+        os.mkdir(f"./out/{word}/")
+    with open(f"./out/{word}/result_{word}_{rec_key}.xml", "w", encoding="utf-8") as f:
         f.write(r.text)
-    with open(f"result_{word}_{rec_key}.json", "w", encoding="utf-8") as f:
+    with open(f"./out/{word}/result_{word}_{rec_key}.json", "w", encoding="utf-8") as f:
         json.dump(d, f, indent=2, ensure_ascii=False)
     # print(r.content)
+
+    df = pd.DataFrame(d["METADATA"]["HOLDINFO"])
     return r.text
 
 
@@ -153,7 +150,10 @@ def parse_xml_to_dataframe(request_text, word):
         return
     df = pd.DataFrame(d["METADATA"]["RECORD"])
     # print(df.to_markdown())
-    df.to_csv(f"result_{word}.csv", index=False)
+
+    if not os.path.exists(f"./out/{word}/"):
+        os.mkdir(f"./out/{word}/")
+    df.to_csv(f"./out/{word}/result_{word}.csv", index=False)
     # data_window(df)
     for idx, row in df.iterrows():
         rec_key = row["REC_KEY"]
