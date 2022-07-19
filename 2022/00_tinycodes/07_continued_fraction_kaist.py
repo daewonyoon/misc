@@ -18,3 +18,16 @@ for j, m in reversed(list(zip(ja, mo))):
     print(float(f - f2f))
     print("-------------")
     
+
+def confrac(ja, mo):    
+    f = Fraction()
+    for j, m in reversed(list(zip(ja, mo))):
+        f = (j)/(m + f)
+    return f
+
+for i in range(1, len(ja)+1):
+    ja_, mo_ = ja[:i], mo[:i]    
+    f = confrac(ja_, mo_)
+    f2 = Fraction( int( "".join([ str(j) for j in ja_]) ), 
+                   int( "".join([ str(m) for m in mo_]) ) )
+    print(f, f2, "%e"%(float(f-f2)), f-f2)
