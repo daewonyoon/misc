@@ -1,3 +1,4 @@
+geopy
 pandas
 pysimplegui
 tqdm

@@ -6,12 +6,14 @@ import threading
 import time
 
 # 3rd
+from geopy.geocoders import Nominatim
 import requests
 import pandas as pd
 from tqdm import tqdm
 import xmltodict
 
 lock = threading.Lock()
+geolocoder = Nominatim(user_agent = "South Korea", timeout=None)
 
 def print_locked(s):
     with lock:
@@ -42,7 +44,7 @@ def query_save_library_info(libcode: int, location: str):
     max_i = nnn * 1000
     for i in range(nnn * 1000, (nnn + 1) * 1000):
         if i % 20 == 0:
-            print_locked(f"{i} " +  "-" * ((i % 1000) // 20))
+            print_locked(f"{location} {i} " +  "-" * ((i % 1000) // 20))
         if i - max_i > 50:
             break
         params["lib_code"] = i
@@ -55,6 +57,13 @@ def query_save_library_info(libcode: int, location: str):
             d = xmltodict.parse(text)
 
             if d["METADATA"].get("LIBINFO", False):
+                address = d["METADATA"]["LIBINFO"]["ADDRESS"]
+                if address:
+                    geo = geolocoder.geocode(address)
+                    if geo :
+                        d["METADATA"]["LIBINFO"]["LATITUDE"] = geo.latitude
+                        d["METADATA"]["LIBINFO"]["LONGITUDE"] = geo.longitude
+                    
                 libinfos.append(d["METADATA"]["LIBINFO"])
                 max_i = i
                 # print_locked(libinfos)
@@ -65,11 +74,11 @@ def query_save_library_info(libcode: int, location: str):
             print_locked(r.text)
             with open(f"xml_err_{nnn}_{i}.xml", "w", encoding="utf-8") as f:
                 f.write(r.text)
-        time.sleep(0.1)
+        time.sleep(0.03)
 
     df = pd.DataFrame(libinfos)
     df.to_csv(f"./out/library_info_{nnn}_{location}.csv", index=None)
-    print_locked(f"{location} file written")
+    print_locked(f"{location} file written. {len(df)} rows.")
     # df.to_csv(f"./out/library_info_{nnn}.csv", index=None)
 
     return 0
@@ -80,6 +89,7 @@ def main():
     # //url = "https://nl.go.kr/kolisnet/openApi/open.php"
     # params = {"lib_code": 141001}
     location_codes = (
+        (141, "경기"),
         (111, "서울"),
         (121, "부산"),
         (122, "대구"),
@@ -91,7 +101,6 @@ def main():
         (129, "광주"),
         (130, "대전"),
         (131, "울산"),
-        (141, "경기"),
         (142, "강원"),
         (143, "충북"),
         (144, "충남"),
