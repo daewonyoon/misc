@@ -117,7 +117,7 @@ def main():
         for future in as_completed(futures):
             try:
                 r = future.result()
-                print_locked(f"{future} exits with {r} status")
+                print_locked(f"{future} exits with status {r}")
             except Exception as e:
                 print_locked(e)
 

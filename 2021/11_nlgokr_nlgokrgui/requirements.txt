@@ -1,5 +1,6 @@
 geopy
 pandas
 pysimplegui
+requests
 tqdm
 xmltodict
