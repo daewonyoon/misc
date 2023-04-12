@@ -21,7 +21,7 @@ HOW_DO_I_COMMAND = "python -m howdoi.howdoi -n 2"
 DEFAULT_ICON = "E:\\TheRealMyDocs\\Icons\\QuestionMark.ico"
 
 
-sg.theme("Material2")
+sg.theme("Material")
 
 
 def HowDoI():
@@ -109,7 +109,12 @@ def search_book(keyword="황순원"):
         "value1": keyword,  # 검색어1
         # "per_page": 100,
     }
-    r = requests.get(QUERY_URL, params=query)
+    try:
+        r = requests.get(QUERY_URL, params=query)
+    except Exception as err:
+        print(type(err))
+        print(err)
+        r = requests.get(QUERY_URL, params=query, verify=False)
     # print(r)
     # print(r.text)
     parse_xml_to_dataframe(r.text, keyword)
@@ -121,7 +126,12 @@ def search_book(keyword="황순원"):
 def search_record(rec_key, word=""):
     query = {"rec_key": rec_key}
 
-    r = requests.get(QUERY_URL, params=query)
+    try:
+        r = requests.get(QUERY_URL, params=query)
+    except Exception as err:
+        print(type(err))
+        print(err)
+        r = requests.get(QUERY_URL, params=query, verify=False)
 
     d = xmltodict.parse(r.text)
 
@@ -138,7 +148,13 @@ def search_record(rec_key, word=""):
         json.dump(d, f, indent=2, ensure_ascii=False)
     # print(r.content)
 
-    df = pd.DataFrame(d["METADATA"]["HOLDINFO"])
+    holdinfo_list = d["METADATA"]["HOLDINFO"]
+    if type(holdinfo_list) == dict:
+        holdinfo_list = [
+            holdinfo_list,
+        ]
+
+    df = pd.DataFrame(holdinfo_list)
     return r.text
 
 

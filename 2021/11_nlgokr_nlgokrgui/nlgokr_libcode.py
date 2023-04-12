@@ -13,7 +13,8 @@ from tqdm import tqdm
 import xmltodict
 
 lock = threading.Lock()
-geolocoder = Nominatim(user_agent = "South Korea", timeout=None)
+geolocoder = Nominatim(user_agent="South Korea", timeout=None)
+
 
 def print_locked(s):
     with lock:
@@ -33,7 +34,6 @@ def walkaround_xml_error(text: str):
 
 
 def query_save_library_info(libcode: int, location: str):
-
     nnn = libcode
     url = "https://nl.go.kr/kolisnet/openApi/open.php"
     params = {"lib_code": 141001}
@@ -44,12 +44,17 @@ def query_save_library_info(libcode: int, location: str):
     max_i = nnn * 1000
     for i in range(nnn * 1000, (nnn + 1) * 1000):
         if i % 20 == 0:
-            print_locked(f"{location} {i} " +  "-" * ((i % 1000) // 20))
+            print_locked(f"{location} {i} " + "-" * ((i % 1000) // 20))
         if i - max_i > 50:
             break
         params["lib_code"] = i
 
-        r = requests.get(url, params=params)
+        try:
+            r = requests.get(url, params=params)
+        except Exception as err:
+            print(type(err))
+            print(err)
+            r = requests.get(url, params=params, verify=False)
         # print_locked(r.text)
         try:
             text = walkaround_xml_error(r.text)
@@ -60,10 +65,10 @@ def query_save_library_info(libcode: int, location: str):
                 address = d["METADATA"]["LIBINFO"]["ADDRESS"]
                 if address:
                     geo = geolocoder.geocode(address)
-                    if geo :
+                    if geo:
                         d["METADATA"]["LIBINFO"]["LATITUDE"] = geo.latitude
                         d["METADATA"]["LIBINFO"]["LONGITUDE"] = geo.longitude
-                    
+
                 libinfos.append(d["METADATA"]["LIBINFO"])
                 max_i = i
                 # print_locked(libinfos)
@@ -85,7 +90,6 @@ def query_save_library_info(libcode: int, location: str):
 
 
 def main():
-
     # //url = "https://nl.go.kr/kolisnet/openApi/open.php"
     # params = {"lib_code": 141001}
     location_codes = (
