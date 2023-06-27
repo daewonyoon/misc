@@ -9,15 +9,17 @@ import pytube
 
 sg.change_look_and_feel("Python")
 
-cache_sfs = sg.user_settings_get_entry("-savefolders-", [])
-cache_lsf = sg.user_settings_get_entry("-last savefolder-", "")
+cache_urllast = sg.user_settings_get_entry("-last url-", "")
+cache_folderlist = sg.user_settings_get_entry("-savefolders-", [])
+cache_folderlast = sg.user_settings_get_entry("-last savefolder-", "")
+
 
 layout = [
     [sg.Text("copy youtube url below :"), sg.Text(size=(60, 1), key="-OUTPUT-")],
-    [sg.Text("youtube url", size=(10, 1)), sg.Input(key="-URL-", size=(70, 1))],
+    [sg.Text("youtube url", size=(10, 1)), sg.Input(default_text=cache_urllast, key="-URL-", size=(70, 1))],
     [
         sg.Text("save folder", size=(10, 1)),
-        sg.Combo(sorted(cache_sfs), default_value=cache_lsf, key="-DIR-", size=(70, 1)),
+        sg.Combo(sorted(cache_folderlist), default_value=cache_folderlast, key="-DIR-", size=(70, 1)),
         sg.FolderBrowse(),
     ],
     [
@@ -135,6 +137,7 @@ while True:  # Event Loop
     if event == "Save":
         url = values["-URL-"]
         folder = values["-DIR-"]
+        sg.user_settings_set_entry("-last url-", url)
         cache_save_folder_to_settings(folder)
         # sg.user_settings_set_entry("-save folder-", folder)
         window["-OUTPUT-"].update("saving...")
