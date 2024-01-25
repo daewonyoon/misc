@@ -6,6 +6,9 @@ import threading
 import PySimpleGUI as sg
 import pytube
 
+# proj
+from extract_mp3_from_mp4 import extract_mp3
+
 
 sg.change_look_and_feel("Python")
 
@@ -65,6 +68,9 @@ def saving_done(_stream, file_path):
     if not os.path.exists(file_path):
         print(f"파일저장 실패. {file_path}")
         window["-OUTPUT-"].update(f"파일저장 실패. {file_path}")
+        return
+    
+    extract_mp3(file_path)   
 
     return
 
