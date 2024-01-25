@@ -18,11 +18,23 @@ cache_folderlast = sg.user_settings_get_entry("-last savefolder-", "")
 
 
 layout = [
-    [sg.Text("copy youtube url below :"), sg.Text(size=(60, 1), key="-OUTPUT-")],
-    [sg.Text("youtube url", size=(10, 1)), sg.Input(default_text=cache_urllast, key="-URL-", size=(70, 1))],
+    [
+        sg.Text("copy youtube url below :"),
+        sg.Text(size=(60, 1), key="-OUTPUT-"),
+    ],
+    [
+        sg.Text("youtube url", size=(10, 1)),
+        sg.Input(default_text=cache_urllast, key="-URL-", size=(70, 1)),
+        sg.Checkbox("Extract Audio", default=True, key="-AUDIO-"),
+    ],
     [
         sg.Text("save folder", size=(10, 1)),
-        sg.Combo(sorted(cache_folderlist), default_value=cache_folderlast, key="-DIR-", size=(70, 1)),
+        sg.Combo(
+            sorted(cache_folderlist),
+            default_value=cache_folderlast,
+            key="-DIR-",
+            size=(70, 1),
+        ),
         sg.FolderBrowse(),
     ],
     [
@@ -56,7 +68,7 @@ def update_progress(stream, _chunk, bytes_remaining):
     return
 
 
-def saving_done(_stream, file_path):
+def saving_done(_stream, file_path, extract_audio):
     """progress bar on complete callback"""
 
     print(f"파일저장 완료. {file_path}")
@@ -69,8 +81,9 @@ def saving_done(_stream, file_path):
         print(f"파일저장 실패. {file_path}")
         window["-OUTPUT-"].update(f"파일저장 실패. {file_path}")
         return
-    
-    extract_mp3(file_path)   
+
+    if extract_audio:
+        extract_mp3(file_path)
 
     return
 
@@ -96,7 +109,7 @@ def popup_choose_stream(vids):
     return selected_id
 
 
-def save_youtube(url, folder):
+def save_youtube(url, folder, extract_audio):
     """start saving youtube stream"""
     print("url:", url)
     print("folder:", folder)
@@ -105,7 +118,7 @@ def save_youtube(url, folder):
 
     yt = pytube.YouTube(url)
     yt.register_on_progress_callback(update_progress)
-    yt.register_on_complete_callback(saving_done)
+    yt.register_on_complete_callback(lambda stream, file_path: saving_done(stream, file_path, extract_audio))
 
     vids = yt.streams
 
@@ -143,12 +156,13 @@ while True:  # Event Loop
     if event == "Save":
         url = values["-URL-"]
         folder = values["-DIR-"]
+        extract_audio = values["-AUDIO-"]
         sg.user_settings_set_entry("-last url-", url)
         cache_save_folder_to_settings(folder)
         # sg.user_settings_set_entry("-save folder-", folder)
         window["-OUTPUT-"].update("saving...")
         window["-PROGRESS-"].update(current_count=0, max=100)
-        save_youtube(url, folder)
+        save_youtube(url, folder, extract_audio)
 
 
 window.close()
